@@ -6,16 +6,16 @@ const Product = db.define('products', {
     type: Sequelize.STRING,
     allowNull: false,
     validate: {
-      notEmpty: true,
-      isAlphanumeric: true
+      notEmpty: true
+      // isAlphanumeric: true
     }
   },
   name: {
     type: Sequelize.STRING,
     allowNull: false,
     validate: {
-      notEmpty: true,
-      isAlphanumeric: true
+      notEmpty: true
+      // isAlphanumeric: true
     }
   },
   price: {
@@ -30,8 +30,8 @@ const Product = db.define('products', {
     type: Sequelize.TEXT,
     allowNull: false,
     validate: {
-      notEmpty: true,
-      isAlphanumeric: true
+      notEmpty: true
+      // isAlphanumeric: true
     }
   },
   imageUrl: {

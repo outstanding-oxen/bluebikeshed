@@ -14,8 +14,7 @@ const Address = db.define('address', {
     allowNull: false,
     validate: {
       notEmpty: true,
-      min: 2,
-      max: 2
+      len: [2, 2]
     }
   },
   zipcode: {
@@ -23,8 +22,7 @@ const Address = db.define('address', {
     allowNull: false,
     validate: {
       notEmpty: true,
-      min: 5,
-      max: 5
+      len: [5, 5]
     }
   },
   address: {

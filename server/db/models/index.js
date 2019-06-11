@@ -9,10 +9,12 @@ const Cart = require('./cart')
 // ASSOCIATIONS
 Product.belongsTo(Category)
 Category.hasMany(Product)
-Product.belongsToMany(OrderDetail, {through: 'OrderDetail'})
+Product.belongsToMany(OrderDetail, {through: 'OrderInfo'})
 OrderDetail.hasOne(Product)
 Order.hasMany(OrderDetail)
 OrderDetail.belongsTo(Order)
+Customer.hasMany(Order)
+Order.belongsTo(Customer)
 Customer.hasMany(Address, {as: 'Address'}) //Going to add CustomerID to Address Model
 
 module.exports = {
