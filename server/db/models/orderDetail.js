@@ -19,13 +19,12 @@ const OrderDetail = db.define('orderDetails', {
     }
   },
   itemExtAmt: {
-    type: Sequelize.FLOAT,
-    allowNull: false,
-    validate: {
-      notEmpty: true,
-      isFloat: true
-    }
+    type: Sequelize.FLOAT
   }
+})
+
+OrderDetail.beforeCreate((instance, options) => {
+  instance.itemExtAmt = instance.itemQty * instance.itemUnitAmt
 })
 
 module.exports = OrderDetail

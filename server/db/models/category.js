@@ -6,8 +6,7 @@ const Category = db.define('categories', {
     type: Sequelize.STRING,
     allowNull: false,
     validate: {
-      notEmpty: true,
-      isAlpha: true
+      notEmpty: true
     }
   }
 })

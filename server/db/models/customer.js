@@ -14,8 +14,7 @@ const Customer = db.define('customer', {
     type: Sequelize.STRING,
     allowNull: false,
     validate: {
-      min: 10,
-      max: 100,
+      len: [10, 100],
       notEmpty: true
     }
   },

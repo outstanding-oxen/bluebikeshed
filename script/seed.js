@@ -1,18 +1,74 @@
 'use strict'
 
 const db = require('../server/db')
-const {User} = require('../server/db/models')
+const {
+  Category,
+  Order,
+  OrderDetail,
+  Product,
+  Customer,
+  Address,
+  Cart
+} = require('../server/db/models')
 
 async function seed() {
   await db.sync({force: true})
   console.log('db synced!')
 
-  const users = await Promise.all([
-    User.create({email: 'cody@email.com', password: '123'}),
-    User.create({email: 'murphy@email.com', password: '123'})
-  ])
+  const jason = await Customer.create({
+    email: 'jason@email.com',
+    password: '1234567890',
+    firstName: 'Jason',
+    lastName: 'Cho'
+  })
 
-  console.log(`seeded ${users.length} users`)
+  const jasonAddress = await Address.create({
+    city: 'New York',
+    state: 'NY',
+    zipcode: 10002,
+    address: '123 Hanover St',
+    customerId: jason.id
+  })
+
+  const jasonOrder = await Order.create({
+    merchantAmt: 0,
+    tax: 0.08875,
+    shippingAmt: 0,
+    totalAmt: 0,
+    customerId: jason.id
+  })
+
+  const lottoDream = await Product.create({
+    sku: 'mon-lotto01',
+    name: 'Winning the Lottery',
+    price: 40,
+    description: 'Winning the Lottery with a Jackpot of 4 million dollars.',
+    imageUrl:
+      'https://www.ialottery.com/images/game-logos/megamillions-large.gif'
+  })
+
+  const spideyDream = await Product.create({
+    sku: 'shspider01',
+    name: 'Being Spider-Man',
+    price: 50,
+    description:
+      'You are Spider-Man swinging around the city and then stopping a robbery in progress.',
+    imageUrl:
+      'https://store.playstation.com/store/api/chihiro/00_09_000/container/US/en/999/UP9000-CUSA02299_00-MARVELSSPIDERMAN/1559925379000/image?w=240&h=240&bg_color=000000&opacity=100&_version=00_09_000'
+  })
+
+  const jasonOrderLotto = await OrderDetail.create({
+    itemUnitAmt: 40,
+    itemQty: 2,
+    orderId: jasonOrder.id,
+    productId: spideyDream.id
+  })
+
+  const category1 = await Category.create({name: 'Free Money'})
+  const category2 = await Category.create({name: 'Tech Dreams'})
+  const category3 = await Category.create({name: 'SuperPowers'})
+  const category4 = await Category.create({name: 'Random'})
+
   console.log(`seeded successfully`)
 }
 
