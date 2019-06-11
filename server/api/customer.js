@@ -46,7 +46,7 @@ router.put('/:id', async (req, res, next) => {
       {email, firstName, lastName, password},
       {returning: true, where: {id}}
     )
-    res.json(customer)
+    res.json(customer[1])
   } catch (error) {
     next(error)
   }
@@ -76,7 +76,7 @@ router.put('/:id/address', async (req, res, next) => {
       {city, state, zipcode, address, customerId: id},
       {returning: true, where: {customerId: id}}
     )
-    res.status(201).json(updatedAddress)
+    res.status(201).json(updatedAddress[1])
   } catch (error) {
     next(error)
   }
