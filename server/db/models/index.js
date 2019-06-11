@@ -17,7 +17,6 @@ const Cart = require('./cart')
  */
 
 Customer.hasMany(Address, {as: 'Address'}) //Going to add CustomerID to Address Model
-Address.hasMany(Customer)
 
 module.exports = {
   User,
