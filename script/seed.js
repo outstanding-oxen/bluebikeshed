@@ -60,10 +60,14 @@ async function seed() {
   const jasonOrderLotto = await OrderDetail.create({
     itemUnitAmt: 40,
     itemQty: 2,
-    itemExtAmt: 80,
     orderId: jasonOrder.id,
     productId: spideyDream.id
   })
+
+  const category1 = await Category.create({name: 'Free Money'})
+  const category2 = await Category.create({name: 'Tech Dreams'})
+  const category3 = await Category.create({name: 'SuperPowers'})
+  const category4 = await Category.create({name: 'Random'})
 
   console.log(`seeded successfully`)
 }
