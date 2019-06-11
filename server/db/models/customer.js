@@ -15,7 +15,6 @@ const Customer = db.define('customer', {
     allowNull: false,
     validate: {
       min: 10,
-      max: 100,
       notEmpty: true
     }
   },
