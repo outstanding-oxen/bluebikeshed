@@ -3,11 +3,11 @@ const db = require('../db')
 
 const Product = db.define('products', {
   sku: {
-    type: Sequelize.FLOAT,
+    type: Sequelize.STRING,
     allowNull: false,
     validate: {
       notEmpty: true,
-      isFloat: true
+      isAlphanumeric: true
     }
   },
   name: {
