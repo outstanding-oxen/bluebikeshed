@@ -1,6 +1,6 @@
 const Sequelize = require('sequelize')
 const db = require('../db')
-
+//everything should be integers
 const Order = db.define('orders', {
   date: {
     type: Sequelize.DATE,
