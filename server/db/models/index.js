@@ -1,10 +1,10 @@
 const Sequelize = require('sequelize')
 const db = require('../db')
-const Category = require('./Category')
-const Order = require('./Order')
-const OrderDetail = require('./OrderDetail')
-const Product = require('./Products')
-const Customer = require('./customer')
+const Category = require('./category')
+const Order = require('./order')
+const OrderDetail = require('./orderDetail')
+const Product = require('./products')
+const User = require('./user')
 const Address = require('./address')
 const Cart = require('./cart')
 
@@ -19,13 +19,18 @@ OrderDetail.belongsTo(Order)
 Customer.hasMany(Order)
 Order.belongsTo(Customer)
 Customer.hasMany(Address, {as: 'Address'}) //Going to add CustomerID to Address Model
+// Order.hasMany(OrderDetail)
+// OrderDetail.belongsTo(Order)
+User.hasMany(Order)
+Order.belongsTo(User)
+User.hasMany(Address, {as: 'Address'}) //Going to add CustomerID to Address Model
 
 module.exports = {
   Category,
   Order,
   OrderDetail,
   Product,
-  Customer,
+  User,
   Address,
   Cart
 }

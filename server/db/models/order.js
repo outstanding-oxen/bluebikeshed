@@ -1,6 +1,6 @@
 const Sequelize = require('sequelize')
 const db = require('../db')
-
+//everything should be integers
 const Order = db.define('orders', {
   date: {
     type: Sequelize.DATE,
@@ -12,14 +12,14 @@ const Order = db.define('orders', {
     }
   },
   merchantAmt: {
-    type: Sequelize.FLOAT,
+    type: Sequelize.INTEGER,
     validate: {
       notEmpty: true,
       isFloat: true
     }
   },
   tax: {
-    type: Sequelize.DECIMAL,
+    type: Sequelize.INTEGER,
     allowNull: false,
     validate: {
       notEmpty: true,
@@ -27,7 +27,7 @@ const Order = db.define('orders', {
     }
   },
   shippingAmt: {
-    type: Sequelize.FLOAT,
+    type: Sequelize.INTEGER,
     allowNull: false,
     validate: {
       notEmpty: true,
@@ -35,12 +35,15 @@ const Order = db.define('orders', {
     }
   },
   totalAmt: {
-    type: Sequelize.FLOAT,
+    type: Sequelize.INTEGER,
     allowNull: false,
     validate: {
       notEmpty: true,
       isFloat: true
     }
+  },
+  isFulfilled: {
+    type: Sequelize.ENUM('pending', 'completed', 'cancelled')
   }
 })
 
