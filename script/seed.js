@@ -98,7 +98,7 @@ async function seed() {
   // ORDER
   const jasonOrder = await Order.create({
     merchantAmt: 0,
-    tax: 108875,
+    tax: 0.08875,
     shippingAmt: 0,
     totalAmt: 0,
     userId: jason.id
@@ -106,7 +106,7 @@ async function seed() {
 
   const sriOrder = await Order.create({
     merchantAmt: 0,
-    tax: 106625,
+    tax: 0.06625,
     shippingAmt: 0,
     totalAmt: 0,
     userId: sri.id
