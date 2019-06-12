@@ -43,7 +43,8 @@ const Order = db.define('orders', {
     }
   },
   isFulfilled: {
-    type: Sequelize.ENUM('pending', 'completed', 'cancelled')
+    type: Sequelize.ENUM('pending', 'completed', 'cancelled'),
+    defaultValue: 'pending'
   }
 })
 
