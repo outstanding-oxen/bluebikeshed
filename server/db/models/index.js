@@ -4,7 +4,7 @@ const Category = require('./category')
 const Order = require('./order')
 const OrderDetail = require('./orderDetail')
 const Product = require('./products')
-const Customer = require('./customer')
+const User = require('./user')
 const Address = require('./address')
 const Cart = require('./cart')
 
@@ -16,16 +16,16 @@ Product.belongsToMany(Order, {through: 'orderDetails'})
 // OrderDetail.hasOne(Product)
 // Order.hasMany(OrderDetail)
 // OrderDetail.belongsTo(Order)
-Customer.hasMany(Order)
-Order.belongsTo(Customer)
-Customer.hasMany(Address, {as: 'Address'}) //Going to add CustomerID to Address Model
+User.hasMany(Order)
+Order.belongsTo(User)
+User.hasMany(Address, {as: 'Address'}) //Going to add CustomerID to Address Model
 
 module.exports = {
   Category,
   Order,
   OrderDetail,
   Product,
-  Customer,
+  User,
   Address,
   Cart
 }
