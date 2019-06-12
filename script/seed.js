@@ -6,7 +6,7 @@ const {
   Order,
   OrderDetail,
   Product,
-  Customer,
+  User,
   Address,
   Cart
 } = require('../server/db/models')
@@ -16,14 +16,14 @@ async function seed() {
   console.log('db synced!')
 
   // CUSTOMERS
-  const jason = await Customer.create({
+  const jason = await User.create({
     email: 'jason@email.com',
     password: '1234567890',
     firstName: 'Jason',
     lastName: 'Cho'
   })
 
-  const sri = await Customer.create({
+  const sri = await User.create({
     email: 'sri@email.com',
     password: '0123456789',
     firstName: 'Sri',
