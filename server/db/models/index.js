@@ -1,6 +1,6 @@
 const Sequelize = require('sequelize')
 const db = require('../db')
-const Category = require('./Category')
+const Category = require('./category')
 const Order = require('./Order')
 const OrderDetail = require('./OrderDetail')
 const Product = require('./Products')
