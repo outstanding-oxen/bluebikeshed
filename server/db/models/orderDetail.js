@@ -3,7 +3,7 @@ const db = require('../db')
 
 const OrderDetail = db.define('orderDetails', {
   itemUnitAmt: {
-    type: Sequelize.FLOAT,
+    type: Sequelize.INTEGER,
     allowNull: false,
     validate: {
       notEmpty: true,
