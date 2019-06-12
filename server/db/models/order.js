@@ -19,7 +19,7 @@ const Order = db.define('orders', {
     }
   },
   tax: {
-    type: Sequelize.INTEGER,
+    type: Sequelize.DECIMAL,
     allowNull: false,
     validate: {
       notEmpty: true,
