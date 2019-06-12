@@ -33,7 +33,9 @@ const User = db.define('user', {
     }
   },
   isAdmin: {
-    type: Sequelize.BOOLEAN
+    type: Sequelize.BOOLEAN,
+    defaultValue: false
+    //add default value
   }
 })
 
