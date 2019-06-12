@@ -12,10 +12,10 @@ const Cart = require('./cart')
 Product.belongsTo(Category)
 Category.hasMany(Product)
 Product.belongsToMany(Order, {through: 'orderDetails'})
-// Product.belongsToMany(OrderDetail, {through: 'OrderInfo'})
+// Adding following association create (an unused) FK on Product Model
 // OrderDetail.hasOne(Product)
-// Order.hasMany(OrderDetail)
-// OrderDetail.belongsTo(Order)
+Order.hasMany(OrderDetail)
+OrderDetail.belongsTo(Order)
 Customer.hasMany(Order)
 Order.belongsTo(Customer)
 Customer.hasMany(Address, {as: 'Address'}) //Going to add CustomerID to Address Model
