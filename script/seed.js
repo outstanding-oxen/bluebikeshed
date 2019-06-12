@@ -6,24 +6,23 @@ const {
   Order,
   OrderDetail,
   Product,
-  Customer,
-  Address,
-  Cart
+  User,
+  Address
 } = require('../server/db/models')
 
 async function seed() {
   await db.sync({force: true})
   console.log('db synced!')
 
-  // CUSTOMERS
-  const jason = await Customer.create({
+  // USERS
+  const jason = await User.create({
     email: 'jason@email.com',
     password: '1234567890',
     firstName: 'Jason',
     lastName: 'Cho'
   })
 
-  const sri = await Customer.create({
+  const sri = await User.create({
     email: 'sri@email.com',
     password: '0123456789',
     firstName: 'Sri',
@@ -36,7 +35,7 @@ async function seed() {
     state: 'NY',
     zipcode: 12345,
     address: '123 Hanover St',
-    customerId: jason.id
+    userId: jason.id
   })
 
   const sriAddress = await Address.create({
@@ -44,7 +43,7 @@ async function seed() {
     state: 'NJ',
     zipcode: 13456,
     address: '134 Hoboken St',
-    customerId: sri.id
+    userId: sri.id
   })
 
   // PRODUCT CATEGORIES
@@ -57,7 +56,7 @@ async function seed() {
   const lottoDream = await Product.create({
     sku: 'fm-lotto01',
     name: 'Winning the Lottery',
-    price: 40,
+    price: 4000,
     description: 'Winning the Lottery with a Jackpot of 4 million dollars.',
     imageUrl:
       'https://www.ialottery.com/images/game-logos/megamillions-large.gif',
@@ -67,7 +66,7 @@ async function seed() {
   const spideyDream = await Product.create({
     sku: 'sp-spider01',
     name: 'Being Spider-Man',
-    price: 50,
+    price: 5000,
     description:
       'You are Spider-Man swinging around the city and then stopping a robbery in progress.',
     imageUrl:
@@ -78,7 +77,7 @@ async function seed() {
   const googleDream = await Product.create({
     sku: 'td-google01',
     name: 'Being senior programmer in Google',
-    price: 40,
+    price: 4000,
     description:
       'You are a senior programmer in Google making bucket loads of money and making lots of cool products that everyone loves.',
     imageUrl: 'https://image.flaticon.com/teams/slug/google.jpg',
@@ -88,18 +87,18 @@ async function seed() {
   // ORDER
   const jasonOrder = await Order.create({
     merchantAmt: 0,
-    tax: 0.08875,
+    tax: 108875,
     shippingAmt: 0,
     totalAmt: 0,
-    customerId: jason.id
+    userId: jason.id
   })
 
   const sriOrder = await Order.create({
     merchantAmt: 0,
-    tax: 0.06625,
+    tax: 106625,
     shippingAmt: 0,
     totalAmt: 0,
-    customerId: sri.id
+    userId: sri.id
   })
 
   // ORDER DETAILS
