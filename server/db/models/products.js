@@ -7,7 +7,6 @@ const Product = db.define('products', {
     allowNull: false,
     validate: {
       notEmpty: true
-      // isAlphanumeric: true
     }
   },
   name: {
@@ -15,7 +14,6 @@ const Product = db.define('products', {
     allowNull: false,
     validate: {
       notEmpty: true
-      // isAlphanumeric: true
     }
   },
   price: {
@@ -31,7 +29,6 @@ const Product = db.define('products', {
     allowNull: false,
     validate: {
       notEmpty: true
-      // isAlphanumeric: true
     }
   },
   imageUrl: {

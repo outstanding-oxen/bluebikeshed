@@ -15,6 +15,7 @@ async function seed() {
   await db.sync({force: true})
   console.log('db synced!')
 
+  // CUSTOMERS
   const jason = await Customer.create({
     email: 'jason@email.com',
     password: '1234567890',
@@ -22,14 +23,69 @@ async function seed() {
     lastName: 'Cho'
   })
 
+  const sri = await Customer.create({
+    email: 'sri@email.com',
+    password: '0123456789',
+    firstName: 'Sri',
+    lastName: 'Velagapudi'
+  })
+
+  // ADDRESSES
   const jasonAddress = await Address.create({
     city: 'New York',
     state: 'NY',
-    zipcode: 10002,
+    zipcode: 12345,
     address: '123 Hanover St',
     customerId: jason.id
   })
 
+  const sriAddress = await Address.create({
+    city: 'Hoboken',
+    state: 'NJ',
+    zipcode: 13456,
+    address: '134 Hoboken St',
+    customerId: sri.id
+  })
+
+  // PRODUCT CATEGORIES
+  const categoryMoney = await Category.create({name: 'Free Money'})
+  const categoryTech = await Category.create({name: 'Tech Dreams'})
+  const categorySuper = await Category.create({name: 'SuperPowers'})
+  const categoryRandom = await Category.create({name: 'Random'})
+
+  // PRODUCTS
+  const lottoDream = await Product.create({
+    sku: 'fm-lotto01',
+    name: 'Winning the Lottery',
+    price: 40,
+    description: 'Winning the Lottery with a Jackpot of 4 million dollars.',
+    imageUrl:
+      'https://www.ialottery.com/images/game-logos/megamillions-large.gif',
+    categoryId: categoryMoney.id
+  })
+
+  const spideyDream = await Product.create({
+    sku: 'sp-spider01',
+    name: 'Being Spider-Man',
+    price: 50,
+    description:
+      'You are Spider-Man swinging around the city and then stopping a robbery in progress.',
+    imageUrl:
+      'https://store.playstation.com/store/api/chihiro/00_09_000/container/US/en/999/UP9000-CUSA02299_00-MARVELSSPIDERMAN/1559925379000/image?w=240&h=240&bg_color=000000&opacity=100&_version=00_09_000',
+    categoryId: categorySuper.id
+  })
+
+  const googleDream = await Product.create({
+    sku: 'td-google01',
+    name: 'Being senior programmer in Google',
+    price: 40,
+    description:
+      'You are a senior programmer in Google making bucket loads of money and making lots of cool products that everyone loves.',
+    imageUrl: 'https://image.flaticon.com/teams/slug/google.jpg',
+    categoryId: categoryTech.id
+  })
+
+  // ORDER
   const jasonOrder = await Order.create({
     merchantAmt: 0,
     tax: 0.08875,
@@ -38,36 +94,42 @@ async function seed() {
     customerId: jason.id
   })
 
-  const lottoDream = await Product.create({
-    sku: 'mon-lotto01',
-    name: 'Winning the Lottery',
-    price: 40,
-    description: 'Winning the Lottery with a Jackpot of 4 million dollars.',
-    imageUrl:
-      'https://www.ialottery.com/images/game-logos/megamillions-large.gif'
+  const sriOrder = await Order.create({
+    merchantAmt: 0,
+    tax: 0.06625,
+    shippingAmt: 0,
+    totalAmt: 0,
+    customerId: sri.id
   })
 
-  const spideyDream = await Product.create({
-    sku: 'shspider01',
-    name: 'Being Spider-Man',
-    price: 50,
-    description:
-      'You are Spider-Man swinging around the city and then stopping a robbery in progress.',
-    imageUrl:
-      'https://store.playstation.com/store/api/chihiro/00_09_000/container/US/en/999/UP9000-CUSA02299_00-MARVELSSPIDERMAN/1559925379000/image?w=240&h=240&bg_color=000000&opacity=100&_version=00_09_000'
-  })
-
+  // ORDER DETAILS
   const jasonOrderLotto = await OrderDetail.create({
     itemUnitAmt: 40,
     itemQty: 2,
     orderId: jasonOrder.id,
+    productId: lottoDream.id
+  })
+
+  const jasonOrderSpidey = await OrderDetail.create({
+    itemUnitAmt: 50,
+    itemQty: 1,
+    orderId: jasonOrder.id,
     productId: spideyDream.id
   })
 
-  const category1 = await Category.create({name: 'Free Money'})
-  const category2 = await Category.create({name: 'Tech Dreams'})
-  const category3 = await Category.create({name: 'SuperPowers'})
-  const category4 = await Category.create({name: 'Random'})
+  const sriOrderLotto = await OrderDetail.create({
+    itemUnitAmt: 40,
+    itemQty: 1,
+    orderId: sriOrder.id,
+    productId: lottoDream.id
+  })
+
+  const sriOrderGoogle = await OrderDetail.create({
+    itemUnitAmt: 50,
+    itemQty: 1,
+    orderId: sriOrder.id,
+    productId: googleDream.id
+  })
 
   console.log(`seeded successfully`)
 }
