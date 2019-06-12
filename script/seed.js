@@ -50,6 +50,7 @@ async function seed() {
   const categoryMoney = await Category.create({name: 'Free Money'})
   const categoryTech = await Category.create({name: 'Tech Dreams'})
   const categorySuper = await Category.create({name: 'SuperPowers'})
+  const categoryVacations = await Category.create({name: 'Vacations'})
   const categoryRandom = await Category.create({name: 'Random'})
 
   // PRODUCTS
@@ -82,6 +83,16 @@ async function seed() {
       'You are a senior programmer in Google making bucket loads of money and making lots of cool products that everyone loves.',
     imageUrl: 'https://image.flaticon.com/teams/slug/google.jpg',
     categoryId: categoryTech.id
+  })
+
+  const moretonIslandDream = await Product.create({
+    sku: 'v-aus01',
+    name: 'Trip to Moreton Island',
+    price: 4000,
+    description: 'Relaxing trip to Moreton Island. Dream includes snorkeling, ',
+    imageUrl:
+      'https://www.ialottery.com/images/game-logos/megamillions-large.gif',
+    categoryId: categoryVacations.id
   })
 
   // ORDER
