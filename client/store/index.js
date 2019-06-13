@@ -7,10 +7,19 @@ import product from './product'
 import selectedProduct from './selectedProduct'
 
 const reducer = combineReducers({user, product, selectedProduct})
+import {loadState, saveState} from './localStorage'
+
+// What persistedState will be will depend on how we design our state
+const persistedState = loadState()
 const middleware = composeWithDevTools(
   applyMiddleware(thunkMiddleware, createLogger({collapsed: true}))
 )
-const store = createStore(reducer, middleware)
+const store = createStore(reducer, persistedState, middleware)
+// May need to use lodash throttle if system slows down.
+// How often is the store state changing?
+store.subscribe(() => {
+  saveState(store.getState().cart)
+})
 
 export default store
 export * from './user'
