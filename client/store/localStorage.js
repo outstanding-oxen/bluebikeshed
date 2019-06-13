@@ -3,7 +3,8 @@ export const loadState = () => {
   // mode does not allow use of localStorage
   try {
     // 1. Pull state from localStorage object
-    // 2. If the state is null, return undefined, otherwise return state
+    // 2. If the state is null, return undefined (to let the reducers intialize
+    // the stat instead), otherwise return state
     const serializedState = localStorage.getItem('state')
     if (serializedState === null) {
       return undefined
