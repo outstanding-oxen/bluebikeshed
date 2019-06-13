@@ -19,7 +19,7 @@ const OrderDetail = db.define('orderDetails', {
     }
   },
   itemExtAmt: {
-    type: Sequelize.FLOAT
+    type: Sequelize.INTEGER
   }
 })
 

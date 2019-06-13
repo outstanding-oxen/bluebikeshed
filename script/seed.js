@@ -19,21 +19,23 @@ async function seed() {
     email: 'jason@email.com',
     password: '1234567890',
     firstName: 'Jason',
-    lastName: 'Cho'
+    lastName: 'Cho',
+    isAdmin: false
   })
 
   const sri = await User.create({
     email: 'sri@email.com',
     password: '0123456789',
     firstName: 'Sri',
-    lastName: 'Velagapudi'
+    lastName: 'Velagapudi',
+    isAdmin: false
   })
 
   // ADDRESSES
   const jasonAddress = await Address.create({
     city: 'New York',
     state: 'NY',
-    zipcode: 12345,
+    zipcode: '12345',
     address: '123 Hanover St',
     userId: jason.id
   })
@@ -41,8 +43,16 @@ async function seed() {
   const sriAddress = await Address.create({
     city: 'Hoboken',
     state: 'NJ',
-    zipcode: 13456,
+    zipcode: '03456',
     address: '134 Hoboken St',
+    userId: sri.id
+  })
+
+  const sriAddress2 = await Address.create({
+    city: 'Princeton',
+    state: 'NJ',
+    zipcode: '08540',
+    address: '134 Princeton Dr',
     userId: sri.id
   })
 

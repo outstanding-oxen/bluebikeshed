@@ -1,10 +1,10 @@
 const router = require('express').Router()
-const Customer = require('../db/models/customer')
+const User = require('../db/models/user')
 const Address = require('../db/models/address')
 
 router.get('/', async (req, res, next) => {
   try {
-    const allCustomers = await Customer.findAll()
+    const allCustomers = await User.findAll()
     res.status(200).json(allCustomers)
   } catch (error) {
     next(error)
@@ -15,7 +15,9 @@ router.get('/:id', async (req, res, next) => {
   const id = req.params.id
 
   try {
-    const customer = await Customer.findById(id, {include: [{model: Address}]})
+    const customer = await User.findByPk(id, {
+      include: [{model: Address, as: 'Address'}]
+    })
     res.status(200).json(customer)
   } catch (error) {
     next(error)
@@ -25,7 +27,7 @@ router.get('/:id', async (req, res, next) => {
 router.post('/', async (req, res, next) => {
   const {email, password, firstName, lastName} = req.body
   try {
-    const newCustomer = await Customer.create({
+    const newCustomer = await User.create({
       email,
       password,
       firstName,
@@ -42,7 +44,7 @@ router.put('/:id', async (req, res, next) => {
   const id = req.params.id
 
   try {
-    let customer = await Customer.update(
+    let customer = await User.update(
       {email, firstName, lastName, password},
       {returning: true, where: {id}}
     )
