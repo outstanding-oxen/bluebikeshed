@@ -11,7 +11,7 @@ const persistedState = loadState()
 const middleware = composeWithDevTools(
   applyMiddleware(thunkMiddleware, createLogger({collapsed: true}))
 )
-const store = createStore(reducer, middleware)
+const store = createStore(reducer, persistedState, middleware)
 // May need to use lodash throttle if system slows down.
 // How often is the store state changing?
 store.subscribe(() => {
