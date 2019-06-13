@@ -81,7 +81,7 @@ async function seed() {
   const jasonAddress = await Address.create({
     city: 'New York',
     state: 'NY',
-    zipcode: 12345,
+    zipcode: '12345',
     address: '123 Hanover St',
     userId: jason.id
   })
@@ -89,8 +89,16 @@ async function seed() {
   const sriAddress = await Address.create({
     city: 'Hoboken',
     state: 'NJ',
-    zipcode: 13456,
+    zipcode: '03456',
     address: '134 Hoboken St',
+    userId: sri.id
+  })
+
+  const sriAddress2 = await Address.create({
+    city: 'Princeton',
+    state: 'NJ',
+    zipcode: '08540',
+    address: '134 Princeton Dr',
     userId: sri.id
   })
 
@@ -296,6 +304,14 @@ async function seed() {
     totalAmt: 0,
     userId: hari.id,
     isFulfilled: 'pending'
+  })
+
+  const sriOrder2 = await Order.create({
+    merchantAmt: 0,
+    tax: 0.06625,
+    shippingAmt: 0,
+    totalAmt: 0,
+    userId: sri.id
   })
 
   // ORDER DETAILS

@@ -7,6 +7,7 @@ const Product = require('./products')
 const User = require('./user')
 const Address = require('./address')
 const Cart = require('./cart')
+const Review = require('./review')
 
 // ASSOCIATIONS
 Product.belongsTo(Category)
@@ -16,16 +17,17 @@ Product.belongsToMany(Order, {through: 'orderDetails'})
 // OrderDetail.hasOne(Product)
 Order.hasMany(OrderDetail)
 OrderDetail.belongsTo(Order)
-User.hasMany(Order)
-Order.belongsTo(User)
-//User.hasMany(Address /* {as: 'Address'} */) //Going to add UserID to Address Model
-//commented out {as: 'Address'} as there is a error :
-//SequelizeAssociationError: You have used the alias Address in two separate associations.
+// Customer.hasMany(Order)
+// Order.belongsTo(Customer)
+// Customer.hasMany(Address, {as: 'Address'}) //Going to add CustomerID to Address Model
 // Order.hasMany(OrderDetail)
 // OrderDetail.belongsTo(Order)
 User.hasMany(Order)
 Order.belongsTo(User)
 User.hasMany(Address, {as: 'Address'}) //Going to add CustomerID to Address Model
+Product.hasMany(Review, {as: 'review'})
+Review.belongsTo(User, {as: 'user'})
+Review.belongsTo(Product, {as: 'product'})
 
 module.exports = {
   Category,

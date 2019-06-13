@@ -1,5 +1,7 @@
 const Sequelize = require('sequelize')
 const db = require('../db')
+const OrderDetail = require('./orderDetail')
+
 //everything should be integers
 const Order = db.define('orders', {
   date: {
@@ -47,5 +49,10 @@ const Order = db.define('orders', {
     defaultValue: 'pending'
   }
 })
+
+// Order.beforeCreate((instance, options) => {
+//   const num = OrderDetail.sum('itemExtAmt', { where: { orderId: 1 } }).then(sum => {})
+//   instance.merchantAmt = num
+// })
 
 module.exports = Order
