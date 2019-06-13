@@ -23,7 +23,7 @@ router.get('/:id', (req, res, next) => {
 })
 
 //Adding a new product if Admin
-router.post('/add-product', isAdmin, (req, res, next) => {
+router.post('/', isAdmin, (req, res, next) => {
   return Product.create(req.body)
     .then(product => res.status(201).send(product))
     .catch(next)
@@ -57,7 +57,7 @@ router.delete('/:id', isAdmin, (req, res, next) => {
 })
 
 //get reviews of a product
-router.get('/products/:id/reviews', (req, res, next) => {
+router.get('/:id/reviews', (req, res, next) => {
   return Review.findAll({
     where: {
       productId: req.params.id
