@@ -3,6 +3,7 @@ const Order = require('../db/models/order')
 const OrderDetail = require('../db/models/orderDetail')
 const Address = require('../db/models/address')
 
+//Get all orders
 router.get('/', async (req, res, next) => {
   try {
     const allOrders = await Order.findAll()
@@ -12,6 +13,7 @@ router.get('/', async (req, res, next) => {
   }
 })
 
+//Get all Orders with order details
 router.get('/all', async (req, res, next) => {
   try {
     const allOrders = await OrderDetail.findAll({
@@ -23,9 +25,9 @@ router.get('/all', async (req, res, next) => {
   }
 })
 
+//Get all order details based on order id
 router.get('/all/:id', async (req, res, next) => {
   const id = req.params.id
-
   try {
     const customer = await OrderDetail.findAll({
       where: {orderId: id}

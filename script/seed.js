@@ -122,6 +122,14 @@ async function seed() {
     userId: sri.id
   })
 
+  const sriOrder2 = await Order.create({
+    merchantAmt: 0,
+    tax: 0.06625,
+    shippingAmt: 0,
+    totalAmt: 0,
+    userId: sri.id
+  })
+
   // ORDER DETAILS
   const jasonOrderLotto = await OrderDetail.create({
     itemUnitAmt: 40,

@@ -7,6 +7,7 @@ const Product = require('./products')
 const User = require('./user')
 const Address = require('./address')
 const Cart = require('./cart')
+const Review = require('./review')
 
 // ASSOCIATIONS
 Product.belongsTo(Category)
@@ -24,6 +25,9 @@ OrderDetail.belongsTo(Order)
 User.hasMany(Order)
 Order.belongsTo(User)
 User.hasMany(Address, {as: 'Address'}) //Going to add CustomerID to Address Model
+Product.hasMany(Review, {as: 'review'})
+Review.belongsTo(User, {as: 'user'})
+Review.belongsTo(Product, {as: 'product'})
 
 module.exports = {
   Category,
