@@ -16,9 +16,11 @@ Product.belongsToMany(Order, {through: 'orderDetails'})
 // OrderDetail.hasOne(Product)
 Order.hasMany(OrderDetail)
 OrderDetail.belongsTo(Order)
-Customer.hasMany(Order)
-Order.belongsTo(Customer)
-Customer.hasMany(Address, {as: 'Address'}) //Going to add CustomerID to Address Model
+User.hasMany(Order)
+Order.belongsTo(User)
+//User.hasMany(Address /* {as: 'Address'} */) //Going to add UserID to Address Model
+//commented out {as: 'Address'} as there is a error :
+//SequelizeAssociationError: You have used the alias Address in two separate associations.
 // Order.hasMany(OrderDetail)
 // OrderDetail.belongsTo(Order)
 User.hasMany(Order)
