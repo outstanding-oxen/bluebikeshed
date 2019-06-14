@@ -5,6 +5,7 @@ import Typography from '@material-ui/core/Typography'
 import Grid from '@material-ui/core/Grid'
 import DeleteIcon from '@material-ui/icons/DeleteForeverRounded'
 import ShoppingCart from '@material-ui/icons/ShoppingCartRounded'
+import Clear from '@material-ui/icons/Clear'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -61,6 +62,24 @@ const Cart = props => {
   ]
   console.log('rendering')
   const classes = useStyles()
+  //To do : get thunks and connect to buttons
+  //clear cart button, deletes all from order where status = pending
+  //update qty button
+  //checkout button, thunk that will change current order where status = pending to status = fulfilled
+  const clearShoppingStandDummy = () => {
+    console.log('clear shopping cart button clicked')
+  }
+  const updateShoppingStandDummy = () => {
+    console.log('update shopping cart button clicked')
+  }
+  const checkoutShoppingStandDummy = () => {
+    console.log('checkout shopping cart button clicked')
+  }
+
+  const deleteShoppingStandDummy = () => {
+    console.log('checkout shopping cart button clicked')
+  }
+
   return (
     <div className={classes.root}>
       <Grid container spacing={3}>
@@ -68,6 +87,9 @@ const Cart = props => {
           <Paper className={classes.paper} style={{height: '200px'}}>
             <div>name</div>
             <div>Address</div>
+            <button onClick={clearShoppingStandDummy}>
+              <Clear />
+            </button>
           </Paper>
         </Grid>
 
@@ -80,6 +102,7 @@ const Cart = props => {
             <div> total</div>
             {/* add link to checkout to reducer */}
             checkout button
+            <button onClick={checkoutShoppingStandDummy}> checkout</button>
             <ShoppingCart className={classes.icon} />
           </Paper>
         </Grid>
@@ -97,10 +120,16 @@ const Cart = props => {
                     <div>{product.name}</div>
                     <div>quantity</div>
                     <div>${product.price} times quantity</div>
-                    <div>remove item button</div>
+                    <div>
+                      remove item button<DeleteIcon className={classes.icon} />
+                      <button onClick={deleteShoppingStandDummy}>delete</button>
+                    </div>
                     <div>
                       {/* add link here to delete */}
-                      update quanity<DeleteIcon classname={classes.icon} />
+                      <button onClick={checkoutShoppingStandDummy}>
+                        update
+                      </button>
+                      update quanity
                     </div>
                   </div>
                 </Paper>
