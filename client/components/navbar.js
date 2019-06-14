@@ -119,6 +119,7 @@ const Navbar = ({handleClick, isLoggedIn}) => {
             <Typography variant="h6" className={classes.title}>
               {/* <Link to="/campuses">Campuses</Link> */}
               <Link to="/categories">Categories</Link>
+              <Link to="/products">Products</Link>
             </Typography>
             {/* SEARCH FORM */}
 
