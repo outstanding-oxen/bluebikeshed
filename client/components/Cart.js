@@ -66,6 +66,7 @@ const Cart = props => {
   //clear cart button, deletes all from order where status = pending
   //update qty button
   //checkout button, thunk that will change current order where status = pending to status = fulfilled
+  //
   const clearShoppingStandDummy = () => {
     console.log('clear shopping cart button clicked')
   }
@@ -77,7 +78,7 @@ const Cart = props => {
   }
 
   const deleteShoppingStandDummy = () => {
-    console.log('checkout shopping cart button clicked')
+    console.log('delete shopping cart button clicked')
   }
 
   return (
@@ -88,8 +89,9 @@ const Cart = props => {
             <div>name</div>
             <div>Address</div>
             <button onClick={clearShoppingStandDummy}>
-              <Clear />
+              clear shopping cart
             </button>
+            <Clear />
           </Paper>
         </Grid>
 
@@ -126,10 +128,8 @@ const Cart = props => {
                     </div>
                     <div>
                       {/* add link here to delete */}
-                      <button onClick={checkoutShoppingStandDummy}>
-                        update
-                      </button>
                       update quanity
+                      <button onClick={updateShoppingStandDummy}>update</button>
                     </div>
                   </div>
                 </Paper>
