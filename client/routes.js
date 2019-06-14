@@ -8,6 +8,8 @@ import {me} from './store'
 
 import SignIn from './components/SignIn'
 import SignUp from './components/SignUp'
+import AllProducts from './components/AllProducts'
+import ProductPage from './components/ProductPage'
 /**
  * COMPONENT
  */
@@ -25,6 +27,10 @@ class Routes extends Component {
         {/* <Route path="/login" component={Login} /> */}
         <Route path="/login" component={SignIn} />
         <Route path="/signup" component={SignUp} />
+        <Route exact path="/products" component={AllProducts} />
+        <Route exact path="/products/:id(\d+)" component={ProductPage} />
+        {/* <Route exact path="/products/:id(\d+)" component={SingleCampus} /> */}
+
         {isLoggedIn && (
           <Switch>
             {/* Routes placed here are only available after logging in */}
