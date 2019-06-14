@@ -14,16 +14,18 @@ notifications:
 install:
   - npm ci # faster, goes only from package-lock
 before_script:
-  - psql -c 'create database "boilermaker-test";' -U postgres # remember to change this name if you change it elsewhere (e.g. package.json)
+  - psql -c 'create database "iDream-test";' -U postgres # remember to change this name if you change it elsewhere (e.g. package.json)
 script:
-  - npm test             # test the code
+  - npm test # test the code
   - npm run build-client # make the bundle
 
-# before_deploy:
-#   - rm -rf node_modules # omit from the tarball, since we skip cleanup
-# deploy:
-#   skip_cleanup: true # prevents travis from deleting the build
-#   provider: heroku
-#   app: YOUR-HEROKU-APP-NAME-HERE # see README
-#   api_key:
-#     secure: YOUR-***ENCRYPTED***-API-KEY-HERE # see README
+  # before_deploy:
+  - rm -rf node_modules # omit from the tarball, since we skip cleanup
+deploy:
+  skip_cleanup: true # prevents travis from deleting the build
+  provider: heroku
+  app: test-dream # see README
+  api_key:
+    secure:
+      mmCeikGkYWuGrhsNe/H3brdZA2NNaQSk0kSCDWp4LugrLSlC1uveOstnp9AwQVyZnmMfI0w7CaUi2TtlZ0+TNdZzbKO6TQ2J+uEEpfL3ToDZcPS6mv03Lk8MMkUTR8LAWrfv+lKen0wZR0ctNnrWuqkawqssaUxBysfcwru4HsMzyeOO0RFtjmPU6uRhR6nqaU3zyc2MbPCoSDdBawB8zXccDvwXSESwCMkga/+uXZMWc7FzZMtdiA8OglVnqBlXAxnAlKtlW+I8rdetHfM1Ciczxjy6zcs7/Y0iQpmS90vNj3jxRVjkb0S3NmJBy4r1/mlgo2thReFoIVpw/jqrpbOcKsaJt6Xi6hOg3pV85vjIgbCxgEZGV2v4gjv7NsuHZ8fslURmfU+hlkzsYDFWvRT6gGX8eclxr6vL2LBOBpSDBkggjZi9jjI3s4R076OV8zuekfvK1tngW7YRGszGEs8ueCza0H97QjNdAybLaWellZt4zbGvBgqKPYzjEw25zxCkS8dViMnacefDNqDFenXobmc1oRyaZIS08ZAGLvFsZ2XM49iniFN0RZ4inpbqtqv+Ar3Udmq48Q/MkqkO80cy7A0V9d/TzMm/5EdcAde3RHrMqLPysxZxCgxMhA93E1XhlET9cA5pyd+nL8cr+4Y0vuKe6g06r56IEI9tmbY=
+      # see README
