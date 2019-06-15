@@ -49,31 +49,30 @@ const updateQuantity = (item, qty) => ({
 
 export const addToOrder = (product, user) => async dispatch => {
   try {
-    const {data} = await axios.get(`/api/users/:${user.id}/orders`) // Returns user with order? Or return order for user?
-    const orderDetails = data.order.orderDetails // assumes data is user
+    // res.data will have user order (no other user data)
+    const res = await axios.get(`/api/users/:${user.id}/orders`)
+    const order = res.data
+    const orderDetails = order.orderDetails
     const productId = product.id
 
-    const productInsideOrder = orderDetails.filter(orderDetail => {
-      return orderDetail.productId === productId
-    })
+    // Create obj w/ productIds as key to orderDetail
+    const productsObj = orderDetails.reduce((obj, orderDetail) => {
+      obj[orderDetail.productId] = orderDetail
+      return obj
+    }, {})
 
-    // If product already exist in orderDetails, increment qty by 1
-    if (productInsideOrder.length) {
-      ;[...orderDetails].forEach(orderDetail => {
-        if (orderDetail.productId === productId) {
-          return {...orderDetail}
-        }
-        return {...orderDetail}
+    // If orderDetail with productId exists, update qty
+    // Otherwise, add product as new orderDetail to order
+    if (productsObj[productId]) {
+      const orderDetail = productsObj[productId]
+      await axios.put(`/api/orderdetails/${orderDetail.id}`, {
+        itemQty: orderDetail.itemQty + 1
       })
     } else {
-      await axios.post('/api/orderDetails/', {
-        itemUnitAmt: product.price,
-        itemQty: 1,
-        orderId: data.id,
-        productId
-      })
-      dispatch(product)
+      await axios.post(`/api/orderdetails/${order.id}`)
     }
+
+    dispatch(addToCart(product))
   } catch (err) {
     console.error(err)
   }
