@@ -12,10 +12,15 @@ import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button'
 // import {IconButton} from '@material-ui/core/IconButton'
 // import {MenuIcon} from '@material-ui/core/Menu'
-import {fade, makeStyles} from '@material-ui/core/styles'
+import {fade, makeStyles, withStyles} from '@material-ui/core/styles'
 
 import SearchIcon from '@material-ui/icons/Search'
 import InputBase from '@material-ui/core/InputBase'
+
+import ShoppingCartIcon from '@material-ui/icons/ShoppingCart'
+import IconButton from '@material-ui/core/IconButton'
+import Badge from '@material-ui/core/Badge'
+
 //MATERIAL UI
 const useStyles = makeStyles(theme => ({
   root: {
@@ -87,6 +92,20 @@ const useStyles = makeStyles(theme => ({
     }
   }
 }))
+
+const StyledBadge = withStyles(theme => ({
+  badge: {
+    top: '50%',
+    right: -3,
+    // The border color match the background color.
+    border: `2px solid ${
+      theme.palette.type === 'light'
+        ? theme.palette.grey[200]
+        : theme.palette.grey[900]
+    }`
+  }
+}))(Badge)
+
 const AdapterLink = React.forwardRef((props, ref) => (
   <Link innerRef={ref} {...props} />
 ))
@@ -136,7 +155,11 @@ const Navbar = ({handleClick, isLoggedIn}) => {
                 inputProps={{'aria-label': 'Search'}}
               />
             </div>
-
+            <IconButton aria-label="Cart" style={{color: 'white'}}>
+              <StyledBadge badgeContent={2} color="primary">
+                <ShoppingCartIcon />
+              </StyledBadge>
+            </IconButton>
             {/* <Link to="/login"> */}
             <Button component={AdapterLink} to="/login" color="inherit">
               Login
