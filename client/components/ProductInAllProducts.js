@@ -12,6 +12,8 @@ import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
 import Box from '@material-ui/core/Box'
 import Card from '@material-ui/core/Card'
+import {Link} from 'react-router-dom'
+
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
@@ -38,6 +40,9 @@ const useStyles = makeStyles(theme => ({
   },
   media: {
     height: 160
+  },
+  links: {
+    textDecoration: 'none'
   }
 }))
 
@@ -59,6 +64,7 @@ const ProductInAllProducts = props => {
       <Grid container spacing={3}>
         {props.products.map(product => (
           <Grid item xs={3} key={product.id}>
+            {/* <Link to= */}
             <CardActionArea>
               <CardMedia
                 className={classes.media}
@@ -67,7 +73,12 @@ const ProductInAllProducts = props => {
               />
               <CardContent>
                 <Typography gutterBottom variant="h5" component="h2">
-                  {product.name}
+                  <Link
+                    to={`/products/${product.id}`}
+                    className={classes.links}
+                  >
+                    {product.name}
+                  </Link>
 
                   <Box textAlign="right" m={1} fontWeight="fontWeightBold">
                     ${product.price / 100}
