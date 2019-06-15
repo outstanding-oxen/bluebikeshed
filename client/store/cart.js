@@ -15,8 +15,8 @@ const UPDATE_QUANTITY = 'UPDATE_QUANTITY'
 const defaultCart = {
   mechantAmt: 0,
   tax: 0,
-  shipping: 0,
-  total: 0,
+  shippingAmt: 0,
+  totalAmt: 0,
   products: {} // Follows this format => {id: qty}
 }
 
@@ -47,44 +47,79 @@ const updateQuantity = (item, qty) => ({
  * THUNK CREATOR
  */
 
+export const addToOrder = (product, user) => async dispatch => {
+  try {
+    const {data} = await axios.get(`/api/users/:${user.id}/orders`) // Returns user with order? Or return order for user?
+    const orderDetails = data.order.orderDetails // assumes data is user
+    const productId = product.id
+
+    const productInsideOrder = orderDetails.filter(orderDetail => {
+      return orderDetail.productId === productId
+    })
+
+    // If product already exist in orderDetails, increment qty by 1
+    if (productInsideOrder.length) {
+      ;[...orderDetails].forEach(orderDetail => {
+        if (orderDetail.productId === productId) {
+          return {...orderDetail}
+        }
+        return {...orderDetail}
+      })
+    } else {
+      await axios.post('/api/orderDetails/', {
+        itemUnitAmt: product.price,
+        itemQty: 1,
+        orderId: data.id,
+        productId
+      })
+      dispatch(product)
+    }
+  } catch (err) {
+    console.error(err)
+  }
+}
+
+/**
+ * HELPER FUNCTIONS
+ * To clean up the code in the reducer cases
+ */
+const productMinItem = (products, item) => {
+  // Removes the item from the list of products
+  const updtProduct = {}
+  let merchSub = 0
+  for (let key in products) {
+    // If product key does not match item to remove, add to new product
+    if (key !== item.id) {
+      updtProduct[key] = products[key]
+      // Otherwise calculate the value to remove from merchAmt
+    } else {
+      merchSub = products[key] * item.price // qty * item.price
+    }
+  }
+  return [updtProduct, merchSub]
+}
+
+const productUpdtItemQty = (products, item, qty) => {
+  // Updates the product array with the quantity listed
+  // If quantity is 0, remove item from products obj.
+  if (!qty) return productMinItem(products, item)
+
+  const merchSub = (products[item.id] - qty) * item.price
+  const updtProduct = {...products, [item.id]: qty}
+
+  return [updtProduct, merchSub]
+}
+
 /**
  * REDUCER
  */
 export default function(state = defaultCart, action) {
-  /**
-   * HELPER FUNCTIONS
-   */
-  const productMinItem = (products, item, qty = 0) => {
-    const updtProduct = {}
-    let merchSub = 0
-    for (let key in products) {
-      if (key !== item.id) {
-        updtProduct[key] = products[key]
-      } else {
-        merchSub = products[key] * item.price
-      }
-    }
-    return [updtProduct, merchSub]
-  }
-
-  const productUpdtItemQty = (products, item, qty) => {
-    // If quantity is 0, remove item from products obj.
-    if (!qty) return productMinItem(products, item)
-
-    const merchSub = (products[item.id] - qty) * item.price
-    const updtProduct = {...products, [item.id]: qty}
-
-    return [updtProduct, merchSub]
-  }
-
-  /**
-   * ACTION TYPE CASES
-   */
   switch (action.type) {
     case ADD_TO_CART: {
-      const item = action.item
+      const item = action.item // Product obj from db
       // Exists in cart, update qty
       if (state.products[item.id]) {
+        // products = [{pId: pQty}]
         const stateCopy = {
           ...state,
           merchantAmt: state.merchantAmt + item.price
@@ -96,7 +131,7 @@ export default function(state = defaultCart, action) {
         return {
           ...state,
           merchantAmt: state.merchantAmt + item.price,
-          [item.id]: 1
+          products: {...state.products, [item.id]: 1}
         }
       }
     }
