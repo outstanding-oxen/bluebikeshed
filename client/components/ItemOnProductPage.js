@@ -22,6 +22,10 @@ const useStyles = makeStyles(theme => ({
     padding: theme.spacing(2),
     textAlign: 'center',
     color: theme.palette.text.secondary
+  },
+  image: {
+    width: '400px',
+    height: '200px'
   }
 }))
 
@@ -41,7 +45,7 @@ const ItemOnProductPage = props => {
               title="Contemplative Reptile"
             /> */}
 
-            <img src={props.product.imageUrl} />
+            <img src={props.product.imageUrl} className={classes.image} />
             {<h1>{props.product.name}</h1>}
             <CardContent>
               <Typography gutterBottom variant="h5" component="h2">
