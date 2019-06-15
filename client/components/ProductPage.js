@@ -3,35 +3,28 @@ import {makeStyles} from '@material-ui/core/styles'
 import Paper from '@material-ui/core/Paper'
 import Typography from '@material-ui/core/Typography'
 import Grid from '@material-ui/core/Grid'
-
-const useStyles = makeStyles(theme => ({
-  root: {
-    flexGrow: 1,
-    paddingTop: '10vh'
-  },
-  paper: {
-    padding: theme.spacing(2),
-    textAlign: 'center',
-    color: theme.palette.text.secondary
+import ItemOnProductPage from './ItemOnProductPage'
+import {connect} from 'react-redux'
+import {fetchProduct} from '../store/selectedProduct'
+class ProductPage extends React.Component {
+  constructor() {
+    super()
   }
-}))
-const ProductPage = props => {
-  console.log('rendering')
-  const classes = useStyles()
-  return (
-    <div className={classes.root}>
-      <Grid container spacing={3}>
-        <Grid item xs={6}>
-          <Paper className={classes.paper}>{<h1>TITLE OF ITEM</h1>}</Paper>
-        </Grid>
-        <Grid item xs={6}>
-          <Paper className={classes.paper}>
-            {<h1>erlkgmeklgrmerkmg;ermg;elr,ger,g'er,lgerg,</h1>}
-          </Paper>
-        </Grid>
-      </Grid>
-    </div>
-  )
+
+  componentDidMount() {
+    this.props.getProduct(this.props.match.params.id)
+  }
+  render() {
+    return <ItemOnProductPage product={this.props.product} />
+    // return <h1>{this.props.product.name}</h1>
+  }
 }
 
-export default ProductPage
+const mapState = state => ({
+  product: state.selectedProduct || {}
+})
+
+const mapDispatch = dispatch => ({
+  getProduct: id => dispatch(fetchProduct(id))
+})
+export default connect(mapState, mapDispatch)(ProductPage)
