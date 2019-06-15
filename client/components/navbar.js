@@ -21,6 +21,9 @@ import ShoppingCartIcon from '@material-ui/icons/ShoppingCart'
 import IconButton from '@material-ui/core/IconButton'
 import Badge from '@material-ui/core/Badge'
 
+import Menu from '@material-ui/core/Menu'
+import MenuItem from '@material-ui/core/MenuItem'
+
 //MATERIAL UI
 const useStyles = makeStyles(theme => ({
   root: {
@@ -112,6 +115,15 @@ const AdapterLink = React.forwardRef((props, ref) => (
 
 const Navbar = ({handleClick, isLoggedIn}) => {
   const classes = useStyles()
+  const [anchorEl, setAnchorEl] = React.useState(null)
+
+  function handleMenuClick(event) {
+    setAnchorEl(event.currentTarget)
+  }
+
+  function handleMenuClose() {
+    setAnchorEl(null)
+  }
   return (
     <div className={classes.root}>
       <nav>
@@ -135,13 +147,37 @@ const Navbar = ({handleClick, isLoggedIn}) => {
               DREAMS & CO
             </Button>
             {/* </Link> */}
-            <Typography variant="h6" className={classes.title}>
+            <Button
+              aria-controls="simple-menu"
+              aria-haspopup="true"
+              onClick={handleMenuClick}
+              color="inherit"
+            >
+              Categories
               {/* <Link to="/campuses">Campuses</Link> */}
-              <Link to="/categories">Categories</Link>
-              <Link to="/products">Products</Link>
+            </Button>
+            <Button component={AdapterLink} to="/products" color="inherit">
+              Products
+              {/* <Link to="/campuses">Campuses</Link> */}
+            </Button>
+            <Typography variant="h6" className={classes.title}>
+              {/* <Link onClick={handleMenuClick} to="/categories">
+                Categories
+              </Link> */}
+              {/* <Link to="/products">Products</Link> */}
             </Typography>
+            <Menu
+              id="simple-menu"
+              anchorEl={anchorEl}
+              keepMounted
+              open={Boolean(anchorEl)}
+              onClose={handleMenuClose}
+            >
+              <MenuItem onClick={handleMenuClose}>Travel</MenuItem>
+              <MenuItem onClick={handleMenuClose}>Business</MenuItem>
+              <MenuItem onClick={handleMenuClose}>Soul</MenuItem>
+            </Menu>
             {/* SEARCH FORM */}
-
             <div className={classes.search}>
               <div className={classes.searchIcon}>
                 <SearchIcon color="primary" />
