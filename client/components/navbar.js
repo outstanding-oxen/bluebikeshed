@@ -155,7 +155,12 @@ const Navbar = ({handleClick, isLoggedIn}) => {
                 inputProps={{'aria-label': 'Search'}}
               />
             </div>
-            <IconButton aria-label="Cart" style={{color: 'white'}}>
+            <IconButton
+              component={AdapterLink}
+              to="/cart"
+              aria-label="Cart"
+              style={{color: 'white'}}
+            >
               <StyledBadge badgeContent={2} color="primary">
                 <ShoppingCartIcon />
               </StyledBadge>
