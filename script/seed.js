@@ -51,8 +51,7 @@ async function seed() {
     email: 'hari@email.com',
     password: '0123456789',
     firstName: 'Hari',
-    lastName: 'Doshi',
-    isAdmin: false
+    lastName: 'Doshi'
   })
 
   const alex = await User.create({
@@ -66,8 +65,7 @@ async function seed() {
     email: 'terence@email.com',
     password: '0123456789',
     firstName: 'Terence',
-    lastName: 'Helsel',
-    isAdmin: false
+    lastName: 'Helsel'
   })
 
   const daniel = await User.create({
@@ -125,7 +123,8 @@ async function seed() {
     name: 'Winning the Lottery',
     price: 4000,
     description: 'Literally swim in a pool of money.',
-    imageUrl: 'WILLUPDATE.jpg',
+    imageUrl:
+      'https://st.depositphotos.com/1621958/1699/i/950/depositphotos_16992519-stock-photo-3d-rich-business-man-swimming.jpg',
     categoryId: categoryMoney.id
   })
 
@@ -146,7 +145,8 @@ async function seed() {
     price: 5000,
     description:
       'Become the strongest most overpowered hero of all time. Fly at the speed of light, move planets the size of Jupiter.',
-    imageUrl: 'WILLUPDATE.jpg',
+    imageUrl:
+      'http://sapienplus.com/wp-content/uploads/2014/09/super-humans-real.jpg',
     categoryId: categorySuper.id
   })
 
@@ -156,7 +156,8 @@ async function seed() {
     price: 5000,
     description:
       'Fly at super sonic speeds, blast enemies with lasers. No one can stop you.',
-    imageUrl: 'WILLUPDATE.jpg',
+    imageUrl:
+      'https://static.comicvine.com/uploads/original/11132/111329300/6503840-1484865362849.png',
     categoryId: categorySuper.id
   })
 
@@ -166,7 +167,7 @@ async function seed() {
     price: 5000,
     description:
       'Pilot a giant mech and literally tackle giant monsters. Get in the robot.',
-    imageUrl: 'WILLUPDATE.jpg',
+    imageUrl: 'https://i.ytimg.com/vi/fYmjfLU2h3w/maxresdefault.jpg',
     categoryId: categorySuper.id
   })
 
@@ -186,7 +187,8 @@ async function seed() {
     price: 4000,
     description:
       'Tired of working on small parts of a larger product? Start up is for you! Design the schema, make huge contributions, your ideas will lead the way for the start up',
-    imageUrl: 'WILLUPDATE.jpg',
+    imageUrl:
+      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSzV5o5UF7LnGR2hDR30w-ROqHhJfQCmWC9aMEOv5uAGRhoe1Yc',
     categoryId: careerDream.id
   })
 
@@ -196,7 +198,8 @@ async function seed() {
     price: 4000,
     description:
       'Objection! Your honor my client is innocent, I present to you dream A. With this dream you can live out your fantasies of being in a court case drama!',
-    imageUrl: 'WILLUPDATE.jpg',
+    imageUrl:
+      'https://images05.military.com/sites/default/files/styles/full/public/2018-10/legal_court_justice_lawyer_18x12.png.jpg?itok=ebyoFLGm',
     categoryId: careerDream.id
   })
 
@@ -206,7 +209,8 @@ async function seed() {
     price: 4000,
     description:
       'Discover new laws and phenomenons and push the boundaries of human knowledge in this dream. From the macro scale of supernovas to the microscopic world of quantum mechanics!',
-    imageUrl: 'WILLUPDATE.jpg',
+    imageUrl:
+      'https://video-images.vice.com/articles/5bdb3bfb595ea80006131d19/lede/1541094535342-shutterstock_680929729.jpeg?crop=1xw:0.843328335832084xh;center,center&resize=1200:*',
     categoryId: careerDream.id
   })
 
@@ -216,16 +220,17 @@ async function seed() {
     price: 4000,
     description:
       "It's down to the wire at game 5. The enemy team won the first two, but you guys are coming back with 2 of your own. Compete and make the ultimate comeback in this dream!",
-    imageUrl: 'WILLUPDATE.jpg',
+    imageUrl: 'https://i.udemycdn.com/course/480x270/1712886_5ce0.jpg',
     categoryId: careerDream.id
   })
 
   const proAtheleteDream = await Product.create({
     sku: 'cd-basketball01',
-    name: 'e',
+    name: 'Be a pro Basketball player',
     price: 4000,
     description: 'Ball is life.',
-    imageUrl: 'WILLUPDATE.jpg',
+    imageUrl:
+      'https://www.ncsasports.org/blog/wp-content/uploads/2012/09/DIII-NAIA-GoPro.png',
     categoryId: careerDream.id
   })
 
@@ -235,7 +240,8 @@ async function seed() {
     price: 4000,
     description:
       'We did a collab with Christopher Nolan to bring this dream. Relive the crazy life of Jordan Belfort. Warning: Drugs in dreams may lead to real life addiction. Please use responsibly.',
-    imageUrl: 'WILLUPDATE.jpg',
+    imageUrl:
+      'https://www.thenational.ae/image/policy:1.607103:1514815117/image/jpeg.jpg?f=16x9&w=1200&$p$f$w=dfa40e8',
     categoryId: careerDream.id
   })
 
@@ -245,7 +251,8 @@ async function seed() {
     price: 70000,
     description:
       'Relaxing trip to Moreton Island. Dream includes snorkeling, paddling, sandsurfing. Food included in dream. ',
-    imageUrl: 'WILLUPDATE.jpg',
+    imageUrl:
+      'https://www.australia.com/content/australia/en/places/brisbane-and-surrounds/guide-to-moreton-island/jcr:content/image.adapt.1200.HIGH.jpg',
     categoryId: categoryVacations.id
   })
 
@@ -255,7 +262,8 @@ async function seed() {
     price: 10000,
     description:
       'Beautiful day at Bondi beach. Activities include surfing, swimming, suntanning and relaxing, beach volleyball. Near Sydney if you get bored. ',
-    imageUrl: 'WILLUPDATE.jpg',
+    imageUrl:
+      'https://www.sydney.com/sites/sydney/files/styles/full_height_image/public/2019-03/croppedtile-121137-BondiBeachSunrise-imgDNSW.jpg?itok=9G84pP6S',
     categoryId: categoryVacations.id
   })
 
@@ -265,7 +273,8 @@ async function seed() {
     price: 8000,
     description:
       'Take a scenic route through the beautiful Gold Coast of Australia! Breathtaking views, gorgeous sights to behold, you will not forget this experience! ',
-    imageUrl: 'WILLUPDATE.jpg',
+    imageUrl:
+      'https://www.sbs.com.au/programs/sites/sbs.com.au.programs/files/styles/full/public/gold_coast1280.jpg?itok=kFx8RvR6',
     categoryId: categoryVacations.id
   })
 
