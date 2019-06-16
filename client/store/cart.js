@@ -47,10 +47,10 @@ const updateQuantity = (item, qty) => ({
  * THUNK CREATOR
  */
 
-export const addToOrder = (product, user) => async dispatch => {
+export const addToOrder = (product, userId) => async dispatch => {
   try {
     // res.data will have user order (no other user data)
-    const res = await axios.get(`/api/users/:${user.id}/orders`)
+    const res = await axios.get(`/api/users/:${userId}/orders`)
     const order = res.data
     const orderDetails = order.orderDetails
 
@@ -82,14 +82,14 @@ export const addToOrder = (product, user) => async dispatch => {
   }
 }
 
-export const checkout = user => async dispatch => {
+export const checkout = userId => async dispatch => {
   // Currently the thunk only updates the order to "completed"
   // This thunk will need to be updated for future tiers because
   // completedOrder will be used to:
   //  1. charge customer
   //  2. notify warehouse what products to ship to customer
   try {
-    const res = await axios.put(`/api/orders/${user.id}`, {
+    const res = await axios.put(`/api/orders/${userId}`, {
       isFulfilled: 'completed'
     })
     const completedOrder = res.data
@@ -99,9 +99,9 @@ export const checkout = user => async dispatch => {
   }
 }
 
-export const removeProduct = (product, user) => async dispatch => {
+export const removeProduct = (product, userId) => async dispatch => {
   try {
-    const res = await axios.get(`/api/users/${user.id}/orders`)
+    const res = await axios.get(`/api/users/${userId}/orders`)
     const order = res.data
     const orderDetails = order.orderDetails
 
@@ -116,6 +116,60 @@ export const removeProduct = (product, user) => async dispatch => {
       const orderDetailId = productsObj[product.id].id
       await axios.delete(`/api/orderdetails/${orderDetailId}`)
       dispatch(removeItem(product))
+    }
+  } catch (err) {
+    console.error(err)
+  }
+}
+
+export const clearOrder = userId => async dispatch => {
+  try {
+    const res = await axios.get(`/api/users/${userId.id}/orders`)
+    const order = res.data
+    const orderDetails = order.orderDetails
+
+    for (let i = 0; i < orderDetails.length; i++) {
+      const orderDetailId = orderDetails[i].id
+      await axios.delete(`/api/orderdetails/${orderDetailId}`)
+    }
+
+    dispatch(clearCart())
+  } catch (err) {
+    console.error(err)
+  }
+}
+
+export const updateProductQuantity = (
+  product,
+  qty,
+  userId
+) => async dispatch => {
+  try {
+    const res = await axios.get(`/api/users/${userId}/orders`)
+    const order = res.data
+    const orderDetails = order.orderDetails
+
+    // Create obj w/ productIds as key to orderDetail
+    const productsObj = orderDetails.reduce((obj, orderDetail) => {
+      obj[orderDetail.productId] = orderDetail
+      return obj
+    }, {})
+
+    if (productsObj[product.id]) {
+      const orderDetail = productsObj[product.id]
+      const orderDetailId = orderDetail.id
+
+      // If qty is 0 delete the orderDetail
+      if (!qty) {
+        await axios.delete(`/api/orderdetails/${orderDetailId}`)
+      } else {
+        const updtAmt = qty * orderDetail.itemUnitAmt
+        await axios.put(`/api/orderdetails/${orderDetailId}`, {
+          itemExtAmt: updtAmt,
+          itemQty: qty
+        })
+        dispatch(updateQuantity(product, qty))
+      }
     }
   } catch (err) {
     console.error(err)
