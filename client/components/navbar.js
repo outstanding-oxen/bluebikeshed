@@ -12,10 +12,18 @@ import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button'
 // import {IconButton} from '@material-ui/core/IconButton'
 // import {MenuIcon} from '@material-ui/core/Menu'
-import {fade, makeStyles} from '@material-ui/core/styles'
+import {fade, makeStyles, withStyles} from '@material-ui/core/styles'
 
 import SearchIcon from '@material-ui/icons/Search'
 import InputBase from '@material-ui/core/InputBase'
+
+import ShoppingCartIcon from '@material-ui/icons/ShoppingCart'
+import IconButton from '@material-ui/core/IconButton'
+import Badge from '@material-ui/core/Badge'
+
+import Menu from '@material-ui/core/Menu'
+import MenuItem from '@material-ui/core/MenuItem'
+
 //MATERIAL UI
 const useStyles = makeStyles(theme => ({
   root: {
@@ -87,12 +95,35 @@ const useStyles = makeStyles(theme => ({
     }
   }
 }))
+
+const StyledBadge = withStyles(theme => ({
+  badge: {
+    top: '50%',
+    right: -3,
+    // The border color match the background color.
+    border: `2px solid ${
+      theme.palette.type === 'light'
+        ? theme.palette.grey[200]
+        : theme.palette.grey[900]
+    }`
+  }
+}))(Badge)
+
 const AdapterLink = React.forwardRef((props, ref) => (
   <Link innerRef={ref} {...props} />
 ))
 
 const Navbar = ({handleClick, isLoggedIn}) => {
   const classes = useStyles()
+  const [anchorEl, setAnchorEl] = React.useState(null)
+
+  function handleMenuClick(event) {
+    setAnchorEl(event.currentTarget)
+  }
+
+  function handleMenuClose() {
+    setAnchorEl(null)
+  }
   return (
     <div className={classes.root}>
       <nav>
@@ -116,13 +147,37 @@ const Navbar = ({handleClick, isLoggedIn}) => {
               DREAMS & CO
             </Button>
             {/* </Link> */}
-            <Typography variant="h6" className={classes.title}>
+            <Button
+              aria-controls="simple-menu"
+              aria-haspopup="true"
+              onClick={handleMenuClick}
+              color="inherit"
+            >
+              Categories
               {/* <Link to="/campuses">Campuses</Link> */}
-              <Link to="/categories">Categories</Link>
-              <Link to="/products">Products</Link>
+            </Button>
+            <Button component={AdapterLink} to="/products" color="inherit">
+              Products
+              {/* <Link to="/campuses">Campuses</Link> */}
+            </Button>
+            <Typography variant="h6" className={classes.title}>
+              {/* <Link onClick={handleMenuClick} to="/categories">
+                Categories
+              </Link> */}
+              {/* <Link to="/products">Products</Link> */}
             </Typography>
+            <Menu
+              id="simple-menu"
+              anchorEl={anchorEl}
+              keepMounted
+              open={Boolean(anchorEl)}
+              onClose={handleMenuClose}
+            >
+              <MenuItem onClick={handleMenuClose}>Travel</MenuItem>
+              <MenuItem onClick={handleMenuClose}>Business</MenuItem>
+              <MenuItem onClick={handleMenuClose}>Soul</MenuItem>
+            </Menu>
             {/* SEARCH FORM */}
-
             <div className={classes.search}>
               <div className={classes.searchIcon}>
                 <SearchIcon color="primary" />
@@ -136,7 +191,16 @@ const Navbar = ({handleClick, isLoggedIn}) => {
                 inputProps={{'aria-label': 'Search'}}
               />
             </div>
-
+            <IconButton
+              component={AdapterLink}
+              to="/cart"
+              aria-label="Cart"
+              style={{color: 'white'}}
+            >
+              <StyledBadge badgeContent={2} color="primary">
+                <ShoppingCartIcon />
+              </StyledBadge>
+            </IconButton>
             {/* <Link to="/login"> */}
             <Button component={AdapterLink} to="/login" color="inherit">
               Login
