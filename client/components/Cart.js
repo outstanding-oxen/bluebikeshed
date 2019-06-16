@@ -3,6 +3,9 @@ import {makeStyles} from '@material-ui/core/styles'
 import Paper from '@material-ui/core/Paper'
 import Typography from '@material-ui/core/Typography'
 import Grid from '@material-ui/core/Grid'
+import {connect} from 'react-redux'
+
+//below are just icons
 import DeleteIcon from '@material-ui/icons/DeleteForeverRounded'
 import ShoppingCart from '@material-ui/icons/ShoppingCartRounded'
 import Clear from '@material-ui/icons/Clear'
@@ -22,6 +25,8 @@ const useStyles = makeStyles(theme => ({
     fontSize: 20
   }
 }))
+
+//dummy data
 const Cart = props => {
   const dummyProducts = [
     {
