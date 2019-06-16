@@ -82,6 +82,16 @@ export const addToOrder = (product, user) => async dispatch => {
   }
 }
 
+export const checkout = user => async dispatch => {
+  try {
+    await axios.put(`/api/orders/${user.id}`, {isFulfilled: 'completed'})
+
+    dispatch(clearCart())
+  } catch (err) {
+    console.error(err)
+  }
+}
+
 /**
  * HELPER FUNCTIONS
  * To clean up the code in the reducer cases
