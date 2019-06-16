@@ -83,10 +83,40 @@ export const addToOrder = (product, user) => async dispatch => {
 }
 
 export const checkout = user => async dispatch => {
+  // Currently the thunk only updates the order to "completed"
+  // This thunk will need to be updated for future tiers because
+  // completedOrder will be used to:
+  //  1. charge customer
+  //  2. notify warehouse what products to ship to customer
   try {
-    await axios.put(`/api/orders/${user.id}`, {isFulfilled: 'completed'})
-
+    const res = await axios.put(`/api/orders/${user.id}`, {
+      isFulfilled: 'completed'
+    })
+    const completedOrder = res.data
     dispatch(clearCart())
+  } catch (err) {
+    console.error(err)
+  }
+}
+
+export const removeProduct = (product, user) => async dispatch => {
+  try {
+    const res = await axios.get(`/api/users/${user.id}/orders`)
+    const order = res.data
+    const orderDetails = order.orderDetails
+
+    // Create obj w/ productIds as key to orderDetail
+    const productsObj = orderDetails.reduce((obj, orderDetail) => {
+      obj[orderDetail.productId] = orderDetail
+      return obj
+    }, {})
+
+    // If the product to remove is in order, delete otherwise do nothing
+    if (productsObj[product.id]) {
+      const orderDetailId = productsObj[product.id].id
+      await axios.delete(`/api/orderdetails/${orderDetailId}`)
+      dispatch(removeItem(product))
+    }
   } catch (err) {
     console.error(err)
   }
