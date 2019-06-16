@@ -32,34 +32,44 @@ const ProductInCart = props => {
   const updateShoppingStandDummy = () => {
     console.log('update shopping cart button clicked')
   }
+
   const classes = useStyles()
   let cartProducts = props.cartProducts
-  return cartProducts.map(product => (
-    <Grid key={product.sku} item xs={9}>
-      <Paper className={classes.paper} style={{height: '200px'}}>
-        <div>
-          <img
-            style={{height: '300px'}}
-            src={product.imageUrl}
-            alt="product Img"
-          />
-          <div>{product.name}</div>
-          <div>quantity</div>
-          <div>${product.price} times quantity</div>
+  if (props.cartProducts.length === 0) {
+    return (
+      <Grid item xs={9}>
+        <Paper className={classes.paper}>No items in cart</Paper>
+      </Grid>
+    )
+  } else {
+    return cartProducts.map(product => (
+      <Grid key={product.sku} item xs={9}>
+        <Paper className={classes.paper} style={{height: '200px'}}>
           <div>
-            remove item button<DeleteIcon className={classes.icon} />
-            <button onClick={deleteShoppingStandDummy}>delete</button>
+            <img
+              style={{height: '300px'}}
+              src={product.imageUrl}
+              alt="product Img"
+            />
+            <div>{product.name}</div>
+            <div>quantity</div>
+            <div>${product.price} times quantity</div>
+            <div>
+              remove item button<DeleteIcon className={classes.icon} />
+              <button onClick={deleteShoppingStandDummy}>delete</button>
+            </div>
+            <div>
+              {/* add link here to delete */}
+              update quanity
+              <button onClick={updateShoppingStandDummy}>update</button>
+            </div>
           </div>
-          <div>
-            {/* add link here to delete */}
-            update quanity
-            <button onClick={updateShoppingStandDummy}>update</button>
-          </div>
-        </div>
-      </Paper>
-    </Grid>
-  ))
+        </Paper>
+      </Grid>
+    ))
+  }
 }
+
 // {dummyProducts.map(product => {
 //   return (
 

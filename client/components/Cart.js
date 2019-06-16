@@ -28,7 +28,7 @@ const useStyles = makeStyles(theme => ({
 
 //dummy data
 const Cart = props => {
-  const dummyProducts = [
+  const dummyProducts1 = [
     {
       sku: '1',
       name: 'dream1',
@@ -65,6 +65,7 @@ const Cart = props => {
       imageUrl: 'jk.jp'
     }
   ]
+  const dummyProducts = []
   console.log('rendering')
   const classes = useStyles()
   //To do : get thunks and connect to buttons
