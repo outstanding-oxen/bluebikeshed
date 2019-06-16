@@ -53,7 +53,6 @@ export const addToOrder = (product, user) => async dispatch => {
     const res = await axios.get(`/api/users/:${user.id}/orders`)
     const order = res.data
     const orderDetails = order.orderDetails
-    const productId = product.id
 
     // Create obj w/ productIds as key to orderDetail
     const productsObj = orderDetails.reduce((obj, orderDetail) => {
@@ -63,13 +62,18 @@ export const addToOrder = (product, user) => async dispatch => {
 
     // If orderDetail with productId exists, update qty
     // Otherwise, add product as new orderDetail to order
-    if (productsObj[productId]) {
-      const orderDetail = productsObj[productId]
+    if (productsObj[product.id]) {
+      const orderDetail = productsObj[product.id]
       await axios.put(`/api/orderdetails/${orderDetail.id}`, {
         itemQty: orderDetail.itemQty + 1
       })
     } else {
-      await axios.post(`/api/orderdetails/${order.id}`)
+      await axios.post(`/api/orderdetails/${order.id}`, {
+        itemUnitAmt: product.price,
+        itemQty: 1,
+        itemExtAmt: product.price,
+        productId: product.id
+      })
     }
 
     dispatch(addToCart(product))
