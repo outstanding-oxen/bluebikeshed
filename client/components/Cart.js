@@ -4,9 +4,9 @@ import Paper from '@material-ui/core/Paper'
 import Typography from '@material-ui/core/Typography'
 import Grid from '@material-ui/core/Grid'
 import {connect} from 'react-redux'
+import ProductInCart from './ProductInCart'
 
 //below are just icons
-import DeleteIcon from '@material-ui/icons/DeleteForeverRounded'
 import ShoppingCart from '@material-ui/icons/ShoppingCartRounded'
 import Clear from '@material-ui/icons/Clear'
 
@@ -75,15 +75,9 @@ const Cart = props => {
   const clearShoppingStandDummy = () => {
     console.log('clear shopping cart button clicked')
   }
-  const updateShoppingStandDummy = () => {
-    console.log('update shopping cart button clicked')
-  }
+
   const checkoutShoppingStandDummy = () => {
     console.log('checkout shopping cart button clicked')
-  }
-
-  const deleteShoppingStandDummy = () => {
-    console.log('delete shopping cart button clicked')
   }
 
   return (
@@ -114,33 +108,7 @@ const Cart = props => {
           </Paper>
         </Grid>
         <Grid container spacing={1}>
-          {dummyProducts.map(product => {
-            return (
-              <Grid key={product.sku} item xs={9}>
-                <Paper className={classes.paper} style={{height: '200px'}}>
-                  <div>
-                    <img
-                      style={{height: '300px'}}
-                      src={product.imageUrl}
-                      alt="product Img"
-                    />
-                    <div>{product.name}</div>
-                    <div>quantity</div>
-                    <div>${product.price} times quantity</div>
-                    <div>
-                      remove item button<DeleteIcon className={classes.icon} />
-                      <button onClick={deleteShoppingStandDummy}>delete</button>
-                    </div>
-                    <div>
-                      {/* add link here to delete */}
-                      update quanity
-                      <button onClick={updateShoppingStandDummy}>update</button>
-                    </div>
-                  </div>
-                </Paper>
-              </Grid>
-            )
-          })}
+          <ProductInCart cartProducts={dummyProducts} />
         </Grid>
       </Grid>
     </div>
