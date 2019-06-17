@@ -94,6 +94,7 @@ const CartPage = props => {
     }
   ]
   const dummyProducts1 = []
+  const productArray = Object.keys(props.products)
   return (
     <div>
       <Cart />
@@ -105,4 +106,11 @@ const CartPage = props => {
   )
 }
 
-export default CartPage
+//export default CartPage
+
+const mapState = state => ({
+  userId: state.id || NaN,
+  products: state.products || {}
+})
+
+export default connect(mapState, null)(CartPage)
