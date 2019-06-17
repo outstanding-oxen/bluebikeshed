@@ -48,6 +48,7 @@ class CartPage extends React.Component {
     //then use thunk to update
     console.log('inside update function')
     console.log('event', event)
+    console.log('other', event.target)
   }
 
   removeProductFromCart(event) {

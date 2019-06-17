@@ -30,13 +30,12 @@ const ProductInCart = props => {
   }
 
   const updateQuantity = props.updateFunction
-  const updateShoppingStandDummy = event => {
-    event.preventDefault()
+  const updateShoppingStandDummy = name => {
+    //event.preventDefault()
     console.log('update shopping cart button clicked')
-    event.persist()
-    console.log(event.target)
+    //event.persist()
+    console.log(name)
   }
-
   const classes = useStyles()
   let cartProducts = props.productsInCart
   if (cartProducts.length === 0) {
