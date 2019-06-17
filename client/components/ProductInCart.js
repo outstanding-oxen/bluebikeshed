@@ -119,8 +119,8 @@ const mapState = state => ({
 
 const mapDispatch = dispatch => ({
   checkout: id => dispatch(checkout(id)),
-  increase: id => dispatch(increase(id)),
-  decrease: id => dispatch(decrease(id))
+  increase: (userId, productId) => dispatch(addToOrder(userId, productId)),
+  decrease: (userId, productId) => dispatch(decrease(userId, productId))
 })
 
 export default connect(mapState, mapDispatch)(ProductInCart)
