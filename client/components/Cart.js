@@ -29,17 +29,9 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const Cart = props => {
-  console.log('rendering')
+  const id = props.userId
   const classes = useStyles()
-  const clearShoppingStandDummy = () => {
-    console.log('clear shopping cart button clicked')
-  }
-
-  const checkoutShoppingStandDummy = () => {
-    console.log('checkout shopping cart button clicked')
-  }
-  const id = props.userid
-
+  console.log('youyou', props.checkout)
   return (
     <div className={classes.root}>
       <Grid container spacing={3}>
@@ -47,7 +39,9 @@ const Cart = props => {
           <Paper className={classes.paper} style={{height: '200px'}}>
             <div>name</div>
             <div>Address</div>
-            <button onClick={props.clearCart}>clear shopping cart</button>
+            <button onClick={() => props.clearCart(id)}>
+              clear shopping cart
+            </button>
             <Clear />
           </Paper>
         </Grid>
@@ -59,9 +53,8 @@ const Cart = props => {
             <div> shipping: shipping here</div>
             <div> tax: taxhere</div>
             <div> total</div>
-            {/* add link to checkout to reducer */}
             checkout button
-            <button onClick={props.checkoutCart}> checkout</button>
+            <button onClick={() => props.checkout(id)}> checkout</button>
             <ShoppingCart className={classes.icon} />
           </Paper>
         </Grid>
@@ -72,4 +65,15 @@ const Cart = props => {
 
 //export default connect(mapState, mapDispatch)(Cart)
 
-export default Cart
+const mapState = state => ({
+  userId: state.id || NaN
+})
+
+const mapDispatch = dispatch => ({
+  clearCart: id => dispatch(clearCart(id)),
+  checkout: id => dispatch(checkout(id))
+})
+
+export default connect(mapState, mapDispatch)(Cart)
+
+//export default Cart

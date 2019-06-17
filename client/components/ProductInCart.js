@@ -6,6 +6,7 @@ import Grid from '@material-ui/core/Grid'
 
 import DeleteIcon from '@material-ui/icons/DeleteForeverRounded'
 import {connect} from 'react-redux'
+import {checkout, addToOrder, decrease} from '../store/cart'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -23,117 +24,93 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
-class ProductInCart extends React.Component {
-  constructor(props) {
-    super()
-    this.updateQuantity = this.updateQuantity.bind(this)
-    this.handleChange = this.handleChange.bind(this)
-    this.state = props.productsInCart
-  }
-  handleChange(event) {
-    console.log(event)
+const ProductInCart = props => {
+  const cartProducts = props.productsInCart
 
-    this.setState({
-      [event.target.name]: event.target.value
-    })
-  }
-  updateQuantity(event) {
-    event.preventDefault()
-    event.persist()
-    console.log(event.target[0].name)
-
-    // console.log('i work')
-    // console.log(event)
-  }
-  render() {
-    console.log('state', this.state)
-    const cartProducts = this.props.productsInCart
-
-    if (cartProducts.length === 0) {
-      return <div>No products in cart</div>
-    } else {
-      return (
-        <div>
-          {cartProducts.map(product => {
-            return (
-              <div key={product.sku}>
-                <div>{product.name}</div>
-                <div>{product.price}</div>
-
-                <div>Quantity: {product.quantity}</div>
-                <button
-                  type="submit"
-                  onSubmit={() => this.props.increase(product.id)}
-                >
-                  Increase
-                </button>
-                <button
-                  type="submit"
-                  onSubmit={() => this.props.decrease(product.id)}
-                >
-                  Decrease
-                </button>
-              </div>
-            )
-          })}
-        </div>
-      )
-    }
-  }
-}
-const ProductInCart1 = props => {
-  console.log('cart products rendering')
-
-  const deleteShoppingStandDummy = () => {
-    console.log('delete shopping cart button clicked')
-  }
-
-  const updateQuantity = props.updateFunction
-  const updateShoppingStandDummy = name => {
-    //event.preventDefault()
-    console.log('update shopping cart button clicked')
-    //event.persist()
-    console.log(name)
-  }
-  const classes = useStyles()
-  let cartProducts = props.productsInCart
   if (cartProducts.length === 0) {
-    return (
-      <Grid item xs={9}>
-        <Paper className={classes.paper}>No items in cart</Paper>
-      </Grid>
-    )
+    return <div>No products in cart</div>
   } else {
-    return cartProducts.map(product => (
-      <Grid key={product.sku} item xs={9}>
-        <Paper className={classes.paper} style={{height: '150px'}}>
-          <div>
-            <img
-              style={{height: '150px'}}
-              src={product.imageUrl}
-              alt="product Img"
-            />
-            <div>{product.name}</div>
-            <div>quantity</div>
-            <div>${product.price} times quantity</div>
-            <div>
-              remove item button<DeleteIcon className={classes.icon} />
-              <button onClick={deleteShoppingStandDummy}>delete</button>
+    const id = props.userId
+    return (
+      <div>
+        {cartProducts.map(product => {
+          return (
+            <div key={product.sku}>
+              <div>{product.name}</div>
+              <div>{product.price}</div>
+
+              <div>Quantity: {product.quantity}</div>
+              <button
+                type="submit"
+                onSubmit={() => props.addToOrder(id, product.id)}
+              >
+                Increase
+              </button>
+              <button
+                type="submit"
+                onSubmit={() => props.decrease(id, product.id)}
+              >
+                Decrease
+              </button>
             </div>
-            <div>
-              <form onSubmit={updateQuantity}>
-                <label htmlFor="quantity">quantity:</label>
-                <input type="text" name="quantity" />
-                <button type="submit">Submit</button>
-                {/* your form fields here */}
-              </form>
-            </div>
-          </div>
-        </Paper>
-      </Grid>
-    ))
+          )
+        })}
+      </div>
+    )
   }
 }
+
+// class ProductInCart1 extends React.Component {
+//   constructor(props) {
+//     super()
+//     this.updateQuantity = this.updateQuantity.bind(this)
+//     this.handleChange = this.handleChange.bind(this)
+//     this.state = props.productsInCart
+//   }
+//   handleChange(event) {
+//     console.log(event)
+
+//     this.setState({
+//       [event.target.name]: event.target.value
+//     })
+//   }
+//   render() {
+//     console.log('state', this.state)
+//     const cartProducts = this.props.productsInCart
+
+//     if (cartProducts.length === 0) {
+//       return <div>No products in cart</div>
+//     } else {
+//       const id = this.props.userId
+//       return (
+//         <div>
+//           {cartProducts.map(product => {
+//             return (
+//               <div key={product.sku}>
+//                 <div>{product.name}</div>
+//                 <div>{product.price}</div>
+
+//                 <div>Quantity: {product.quantity}</div>
+//                 <button
+//                   type="submit"
+//                   onSubmit={() => this.props.addToOrder(id, product.id)}
+//                 >
+//                   Increase
+//                 </button>
+//                 <button
+//                   type="submit"
+//                   onSubmit={() => this.props.decrease(id, product.id)}
+//                 >
+//                   Decrease
+//                 </button>
+//               </div>
+//             )
+//           })}
+//         </div>
+//       )
+//     }
+//   }
+// }
 
 const mapState = state => ({
   cartProducts: state.cart || [], //UPDATE AS NEEDED
