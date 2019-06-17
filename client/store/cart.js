@@ -3,6 +3,7 @@ import axios from 'axios'
 /**
  * ACTION TYPES
  */
+const GET_CART = 'GET_CART'
 const ADD_TO_CART = 'ADD_TO_CART'
 const CLEAR_CART = 'CLEAR_CART'
 const REMOVE_ITEM = 'REMOVE_ITEM'
@@ -23,6 +24,12 @@ const defaultCart = {
 /**
  * ACTION CREATORS
  */
+
+const getCart = (products, merchantAmt) => ({
+  type: GET_CART,
+  products,
+  merchantAmt
+})
 const addToCart = item => ({
   type: ADD_TO_CART,
   item // Should be instance of Product model
@@ -46,6 +53,28 @@ const updateQuantity = (item, qty) => ({
 /**
  * THUNK CREATOR
  */
+export const getOrder = userId => async dispatch => {
+  try {
+    const res = await axios.get(`/api/users/:${userId}/orders`)
+    const order = res.data
+    const orderDetails = order.orderDetails
+
+    const cartObj = orderDetails.reduce(
+      (obj, orderDetail) => {
+        const productId = orderDetail.productId
+        const productQty = orderDetail.itemQty
+        obj.products[productId] = productQty
+        obj.merchantAmt += orderDetail.itemExtAmt
+        return obj
+      },
+      {products: {}, merchantAmt: 0}
+    )
+
+    dispatch(getCart(cartObj.products, cartObj.merchantAmt))
+  } catch (err) {
+    console.error(err)
+  }
+}
 
 export const addToOrder = (product, userId) => async dispatch => {
   try {
@@ -65,7 +94,8 @@ export const addToOrder = (product, userId) => async dispatch => {
     if (productsObj[product.id]) {
       const orderDetail = productsObj[product.id]
       await axios.put(`/api/orderdetails/${orderDetail.id}`, {
-        itemQty: orderDetail.itemQty + 1
+        itemQty: orderDetail.itemQty + 1,
+        itemExtAmt: orderDetail.itemExtAmt + orderDetail.itemUnitAmt
       })
     } else {
       await axios.post(`/api/orderdetails/${order.id}`, {
@@ -212,6 +242,12 @@ const productUpdtItemQty = (products, item, qty) => {
  */
 export default function(state = defaultCart, action) {
   switch (action.type) {
+    case GET_CART:
+      return {
+        ...state,
+        products: action.products,
+        merchantAmt: action.merchantAmt
+      }
     case ADD_TO_CART: {
       const item = action.item // Product obj from db
       // Exists in cart, update qty
