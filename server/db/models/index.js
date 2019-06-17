@@ -12,9 +12,11 @@ const Review = require('./review')
 // ASSOCIATIONS
 Product.belongsTo(Category)
 Category.hasMany(Product)
-Product.belongsToMany(Order, {through: 'orderDetails'})
+// Product.belongsToMany(Order, {through: 'orderDetails'})
 // Adding following association create (an unused) FK on Product Model
 // OrderDetail.hasOne(Product)
+Product.hasMany(OrderDetail)
+OrderDetail.belongsTo(Product)
 Order.hasMany(OrderDetail)
 OrderDetail.belongsTo(Order)
 // Customer.hasMany(Order)
