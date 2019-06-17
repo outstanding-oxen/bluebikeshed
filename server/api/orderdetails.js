@@ -1,5 +1,13 @@
 const router = require('express').Router()
 const OrderDetail = require('../db/models/orderDetail')
-const Order = require('../db/models/order')
+
+// post order given a specific user
+router.post('/:id', (req, res, next) => {
+  let neworder = req.body
+  neworder.userId = req.params.id
+  return OrderDetail.create(neworder)
+    .then(order => res.json(order))
+    .catch(next)
+})
 
 module.exports = router
