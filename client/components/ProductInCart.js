@@ -29,13 +29,17 @@ const ProductInCart = props => {
     console.log('delete shopping cart button clicked')
   }
 
-  const updateShoppingStandDummy = () => {
+  const updateQuantity = props.updateFunction
+  const updateShoppingStandDummy = event => {
+    event.preventDefault()
     console.log('update shopping cart button clicked')
+    event.persist()
+    console.log(event.target)
   }
 
   const classes = useStyles()
-  let cartProducts = props.cartProducts
-  if (props.cartProducts.length === 0) {
+  let cartProducts = props.productsInCart
+  if (cartProducts.length === 0) {
     return (
       <Grid item xs={9}>
         <Paper className={classes.paper}>No items in cart</Paper>
@@ -44,10 +48,10 @@ const ProductInCart = props => {
   } else {
     return cartProducts.map(product => (
       <Grid key={product.sku} item xs={9}>
-        <Paper className={classes.paper} style={{height: '200px'}}>
+        <Paper className={classes.paper} style={{height: '150px'}}>
           <div>
             <img
-              style={{height: '300px'}}
+              style={{height: '150px'}}
               src={product.imageUrl}
               alt="product Img"
             />
@@ -59,9 +63,12 @@ const ProductInCart = props => {
               <button onClick={deleteShoppingStandDummy}>delete</button>
             </div>
             <div>
-              {/* add link here to delete */}
-              update quanity
-              <button onClick={updateShoppingStandDummy}>update</button>
+              <form onSubmit={updateQuantity}>
+                <label htmlFor="quantity">quantity:</label>
+                <input type="text" name="quantity" />
+                <button type="submit">Submit</button>
+                {/* your form fields here */}
+              </form>
             </div>
           </div>
         </Paper>

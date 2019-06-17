@@ -10,7 +10,7 @@ import SignIn from './components/SignIn'
 import SignUp from './components/SignUp'
 import AllProducts from './components/AllProducts'
 import ProductPage from './components/ProductPage'
-import Cart from './components/Cart'
+import Cart from './components/CartPage'
 /**
  * COMPONENT
  */
