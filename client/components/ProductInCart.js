@@ -5,6 +5,7 @@ import Paper from '@material-ui/core/Paper'
 import Grid from '@material-ui/core/Grid'
 
 import DeleteIcon from '@material-ui/icons/DeleteForeverRounded'
+import {connect} from 'react-redux'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -22,7 +23,65 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
-const ProductInCart = props => {
+class ProductInCart extends React.Component {
+  constructor(props) {
+    super()
+    this.updateQuantity = this.updateQuantity.bind(this)
+    this.handleChange = this.handleChange.bind(this)
+    this.state = props.productsInCart
+  }
+  handleChange(event) {
+    console.log(event)
+
+    this.setState({
+      [event.target.name]: event.target.value
+    })
+  }
+  updateQuantity(event) {
+    event.preventDefault()
+    event.persist()
+    console.log(event.target[0].name)
+
+    // console.log('i work')
+    // console.log(event)
+  }
+  render() {
+    console.log('state', this.state)
+    const cartProducts = this.props.productsInCart
+
+    if (cartProducts.length === 0) {
+      return <div>No products in cart</div>
+    } else {
+      return (
+        <div>
+          {cartProducts.map(product => {
+            return (
+              <div key={product.sku}>
+                <div>{product.name}</div>
+                <div>{product.price}</div>
+
+                <div>Quantity: {product.quantity}</div>
+                <button
+                  type="submit"
+                  onSubmit={() => this.props.increase(product.id)}
+                >
+                  Increase
+                </button>
+                <button
+                  type="submit"
+                  onSubmit={() => this.props.decrease(product.id)}
+                >
+                  Decrease
+                </button>
+              </div>
+            )
+          })}
+        </div>
+      )
+    }
+  }
+}
+const ProductInCart1 = props => {
   console.log('cart products rendering')
 
   const deleteShoppingStandDummy = () => {
@@ -76,10 +135,16 @@ const ProductInCart = props => {
   }
 }
 
-// {dummyProducts.map(product => {
-//   return (
+const mapState = state => ({
+  cartProducts: state.cart || [], //UPDATE AS NEEDED
+  userId: state.id || 12345
+})
 
-//   )
-// })}
+const mapDispatch = dispatch => ({
+  checkout: id => dispatch(checkout(id)),
+  increase: id => dispatch(increase(id)),
+  decrease: id => dispatch(decrease(id))
+})
 
-export default ProductInCart
+export default connect(mapState, mapDispatch)(ProductInCart)
+//export default ProductInCart

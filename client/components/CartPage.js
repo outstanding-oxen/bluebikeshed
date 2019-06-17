@@ -11,6 +11,8 @@ import ShoppingCart from '@material-ui/icons/ShoppingCartRounded'
 import Clear from '@material-ui/icons/Clear'
 import RenderToLayer from 'material-ui/internal/RenderToLayer'
 import Cart from './Cart'
+import {checkout, clearCart, updateQuantity} from '../store/cart'
+import {fetchProduct} from '../store/selectedProduct'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -33,12 +35,21 @@ class CartPage extends React.Component {
     super()
     this.updateProductQuantity = this.updateProductQuantity.bind(this)
     this.removeProductFromCart = this.removeProductFromCart.bind(this)
-    this.clearCart = this.clearCart.bind(this)
-    this.checkoutCart = this.checkoutCart.bind(this)
+    this.clearCartFunction = this.clearCartFunction.bind(this)
+    this.checkoutCartFunction = this.checkoutCartFunction.bind(this)
   }
 
   componentDidMount() {
     //fetch all items in cart
+    //output an array of products id with qty
+    //for loop through output to grab product from axios
+    let productIdArray = []
+    let productArray = []
+    for (let i = 0; i < productArray.length; i++) {
+      let product = fetchProduct(productIdArray[i].id)
+      product.quantity = productIdArray[i].qty
+      productArray.push(product)
+    }
   }
 
   updateProductQuantity(event) {
@@ -49,17 +60,22 @@ class CartPage extends React.Component {
     console.log('inside update function')
     console.log('event', event)
     console.log('other', event.target)
+    //this.props.updateQuantity()needs id, item, qty
   }
 
   removeProductFromCart(event) {
     //take in product id and remove product from cart
   }
 
-  clearCart() {
+  clearCartFunction() {
     //clear cart
+    this.props.clearCart(this.props.userId)
   }
 
-  checkoutCart() {}
+  checkoutCartFunction() {
+    console.log(this.props.userId)
+    this.props.checkout(this.props.userId)
+  }
 
   render() {
     const dummyProducts = [
@@ -68,41 +84,49 @@ class CartPage extends React.Component {
         name: 'dream1',
         price: 20000,
         description: 'generic dream 1',
-        imageUrl: 'nada.jpg'
+        imageUrl: 'nada.jpg',
+        quantity: 10
       },
       {
         sku: '2',
         name: 'dream2',
         price: 20000,
         description: 'generic dream 2',
-        imageUrl: 'dk'
+        imageUrl: 'dk',
+        quantity: 100
       },
       {
         sku: 'dream3',
         name: 'haha',
         price: 1123,
         description: 'okay',
-        imageUrl: 'blah.jpg'
+        imageUrl: 'blah.jpg',
+        quantity: 123
       },
       {
         sku: 'dream 4',
         name: 'lofihiphop',
         price: 10,
         description: 'beats to listen to whil chilling',
-        imageUrl: 'kdjflsk.jpg'
+        imageUrl: 'kdjflsk.jpg',
+        quantity: 4321
       },
       {
         sku: 'dream 6',
         name: 'missing dream 5',
         price: 5,
         description: 'loljk',
-        imageUrl: 'jk.jp'
+        imageUrl: 'jk.jp',
+        quantity: 398
       }
     ]
     const dummyProducts1 = []
     return (
       <div>
-        <Cart />
+        <Cart
+          clearCart={this.clearCartFunction}
+          checkoutCart={this.checkoutCartFunction}
+        />
         <ProductInCart
           productsInCart={dummyProducts}
           updateFunction={this.updateProductQuantity}
@@ -112,94 +136,17 @@ class CartPage extends React.Component {
   }
 }
 
-// //dummy data
-// const Cart1 = props => {
-//   const dummyProducts = [
-//     {
-//       sku: '1',
-//       name: 'dream1',
-//       price: 20000,
-//       description: 'generic dream 1',
-//       imageUrl: 'nada.jpg'
-//     },
-//     {
-//       sku: '2',
-//       name: 'dream2',
-//       price: 20000,
-//       description: 'generic dream 2',
-//       imageUrl: 'dk'
-//     },
-//     {
-//       sku: 'dream3',
-//       name: 'haha',
-//       price: 1123,
-//       description: 'okay',
-//       imageUrl: 'blah.jpg'
-//     },
-//     {
-//       sku: 'dream 4',
-//       name: 'lofihiphop',
-//       price: 10,
-//       description: 'beats to listen to whil chilling',
-//       imageUrl: 'kdjflsk.jpg'
-//     },
-//     {
-//       sku: 'dream 6',
-//       name: 'missing dream 5',
-//       price: 5,
-//       description: 'loljk',
-//       imageUrl: 'jk.jp'
-//     }
-//   ]
-//   const dummyProducts1 = []
-//   console.log('rendering')
-//   const classes = useStyles()
-//   //To do : get thunks and connect to buttons
-//   //clear cart button, deletes all from order where status = pending
-//   //update qty button
-//   //checkout button, thunk that will change current order where status = pending to status = fulfilled
-//   //
-//   const clearShoppingStandDummy = () => {
-//     console.log('clear shopping cart button clicked')
-//   }
+const mapState = state => ({
+  cartProducts: state.cart || [], //UPDATE AS NEEDED
+  userId: state.id || 12345
+})
 
-//   const checkoutShoppingStandDummy = () => {
-//     console.log('checkout shopping cart button clicked')
-//   }
+const mapDispatch = dispatch => ({
+  clearCart: id => dispatch(clearCart(id)),
+  checkout: id => dispatch(checkout(id)),
+  updateQuantity: (id, item, qty) => dispatch(updateQuantity(item, qty))
+})
 
-//   return (
-//     <div className={classes.root}>
-//       <Grid container spacing={3}>
-//         <Grid item xs={9}>
-//           <Paper className={classes.paper} style={{height: '200px'}}>
-//             <div>name</div>
-//             <div>Address</div>
-//             <button onClick={clearShoppingStandDummy}>
-//               clear shopping cart
-//             </button>
-//             <Clear />
-//           </Paper>
-//         </Grid>
+export default connect(mapState, mapDispatch)(CartPage)
 
-//         <Grid item xs={3}>
-//           <Paper className={classes.paper} style={{height: '200px'}}>
-//             <div> COSTS</div>
-//             <div>Subtotal (items) : (cost)</div>
-//             <div> shipping: shipping here</div>
-//             <div> tax: taxhere</div>
-//             <div> total</div>
-//             {/* add link to checkout to reducer */}
-//             checkout button
-//             <button onClick={checkoutShoppingStandDummy}> checkout</button>
-//             <ShoppingCart className={classes.icon} />
-//           </Paper>
-//         </Grid>
-//         <Grid container spacing={1}>
-//           <ProductInCart cartProducts={dummyProducts} />
-//         </Grid>
-//       </Grid>
-//     </div>
-//   )
-// }
-
-export default CartPage
+//export default CartPage

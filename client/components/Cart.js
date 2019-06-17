@@ -10,6 +10,8 @@ import ShoppingCart from '@material-ui/icons/ShoppingCartRounded'
 import Clear from '@material-ui/icons/Clear'
 import RenderToLayer from 'material-ui/internal/RenderToLayer'
 
+import {checkout, clearCart} from '../store/cart'
+
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
@@ -36,6 +38,8 @@ const Cart = props => {
   const checkoutShoppingStandDummy = () => {
     console.log('checkout shopping cart button clicked')
   }
+  const id = props.userid
+
   return (
     <div className={classes.root}>
       <Grid container spacing={3}>
@@ -43,9 +47,7 @@ const Cart = props => {
           <Paper className={classes.paper} style={{height: '200px'}}>
             <div>name</div>
             <div>Address</div>
-            <button onClick={clearShoppingStandDummy}>
-              clear shopping cart
-            </button>
+            <button onClick={props.clearCart}>clear shopping cart</button>
             <Clear />
           </Paper>
         </Grid>
@@ -59,7 +61,7 @@ const Cart = props => {
             <div> total</div>
             {/* add link to checkout to reducer */}
             checkout button
-            <button onClick={checkoutShoppingStandDummy}> checkout</button>
+            <button onClick={props.checkoutCart}> checkout</button>
             <ShoppingCart className={classes.icon} />
           </Paper>
         </Grid>
@@ -67,5 +69,7 @@ const Cart = props => {
     </div>
   )
 }
+
+//export default connect(mapState, mapDispatch)(Cart)
 
 export default Cart
