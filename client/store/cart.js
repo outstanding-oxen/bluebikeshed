@@ -79,7 +79,7 @@ export const getOrder = userId => async dispatch => {
 export const addToOrder = (product, userId) => async dispatch => {
   try {
     // res.data will have user order (no other user data)
-    const res = await axios.get(`/api/users/:${userId}/orders`)
+    const res = await axios.get(`/api/users/${userId}/orders`)
     const order = res.data
     const orderDetails = order.orderDetails
 
