@@ -55,22 +55,29 @@ const updateQuantity = (item, qty) => ({
  */
 export const getOrder = userId => async dispatch => {
   try {
-    const res = await axios.get(`/api/users/:${userId}/orders`)
-    const order = res.data
-    const orderDetails = order.orderDetails
+    // Only interact with database if userId is not NULL (e.g. logged in)
+    if (userId) {
+      const res = await axios.get(`/api/users/:${userId}/orders`)
+      const order = res.data
+      const orderDetails = order.orderDetails
 
-    const cartObj = orderDetails.reduce(
-      (obj, orderDetail) => {
-        const productId = orderDetail.productId
-        const productQty = orderDetail.itemQty
-        obj.products[productId] = productQty
-        obj.merchantAmt += orderDetail.itemExtAmt
-        return obj
-      },
-      {products: {}, merchantAmt: 0}
-    )
+      const cartObj = orderDetails.reduce(
+        (obj, orderDetail) => {
+          const productId = orderDetail.productId
+          const productQty = orderDetail.itemQty
+          obj.products[productId] = productQty
+          obj.merchantAmt += orderDetail.itemExtAmt
+          return obj
+        },
+        {products: {}, merchantAmt: 0}
+      )
 
-    dispatch(getCart(cartObj.products, cartObj.merchantAmt))
+      dispatch(getCart(cartObj.products, cartObj.merchantAmt))
+    } else {
+      // If user is null (e.g. is a guest)
+      dispatch(getCart(null, null))
+    }
+    dispatch(getCart())
   } catch (err) {
     console.error(err)
   }
@@ -78,34 +85,36 @@ export const getOrder = userId => async dispatch => {
 
 export const addToOrder = (product, userId) => async dispatch => {
   try {
-    // res.data will have user order (no other user data)
-    const res = await axios.get(`/api/users/:${userId}/orders`)
-    const order = res.data
-    const orderDetails = order.orderDetails
+    // If userId is not null (e.g. user is logged in)
+    if (userId) {
+      // res.data will have user order (no other user data)
+      const res = await axios.get(`/api/users/:${userId}/orders`)
+      const order = res.data
+      const orderDetails = order.orderDetails
 
-    // Create obj w/ productIds as key to orderDetail
-    const productsObj = orderDetails.reduce((obj, orderDetail) => {
-      obj[orderDetail.productId] = orderDetail
-      return obj
-    }, {})
+      // Create obj w/ productIds as key to orderDetail
+      const productsObj = orderDetails.reduce((obj, orderDetail) => {
+        obj[orderDetail.productId] = orderDetail
+        return obj
+      }, {})
 
-    // If orderDetail with productId exists, update qty
-    // Otherwise, add product as new orderDetail to order
-    if (productsObj[product.id]) {
-      const orderDetail = productsObj[product.id]
-      await axios.put(`/api/orderdetails/${orderDetail.id}`, {
-        itemQty: orderDetail.itemQty + 1,
-        itemExtAmt: orderDetail.itemExtAmt + orderDetail.itemUnitAmt
-      })
-    } else {
-      await axios.post(`/api/orderdetails/${order.id}`, {
-        itemUnitAmt: product.price,
-        itemQty: 1,
-        itemExtAmt: product.price,
-        productId: product.id
-      })
+      // If orderDetail with productId exists, update qty
+      // Otherwise, add product as new orderDetail to order
+      if (productsObj[product.id]) {
+        const orderDetail = productsObj[product.id]
+        await axios.put(`/api/orderdetails/${orderDetail.id}`, {
+          itemQty: orderDetail.itemQty + 1,
+          itemExtAmt: orderDetail.itemExtAmt + orderDetail.itemUnitAmt
+        })
+      } else {
+        await axios.post(`/api/orderdetails/${order.id}`, {
+          itemUnitAmt: product.price,
+          itemQty: 1,
+          itemExtAmt: product.price,
+          productId: product.id
+        })
+      }
     }
-
     dispatch(addToCart(product))
   } catch (err) {
     console.error(err)
@@ -131,21 +140,23 @@ export const checkout = userId => async dispatch => {
 
 export const removeProduct = (product, userId) => async dispatch => {
   try {
-    const res = await axios.get(`/api/users/${userId}/orders`)
-    const order = res.data
-    const orderDetails = order.orderDetails
+    if (userId) {
+      const res = await axios.get(`/api/users/${userId}/orders`)
+      const order = res.data
+      const orderDetails = order.orderDetails
 
-    // Create obj w/ productIds as key to orderDetail
-    const productsObj = orderDetails.reduce((obj, orderDetail) => {
-      obj[orderDetail.productId] = orderDetail
-      return obj
-    }, {})
+      // Create obj w/ productIds as key to orderDetail
+      const productsObj = orderDetails.reduce((obj, orderDetail) => {
+        obj[orderDetail.productId] = orderDetail
+        return obj
+      }, {})
 
-    // If the product to remove is in order, delete otherwise do nothing
-    if (productsObj[product.id]) {
-      const orderDetailId = productsObj[product.id].id
-      await axios.delete(`/api/orderdetails/${orderDetailId}`)
-      dispatch(removeItem(product))
+      // If the product to remove is in order, delete otherwise do nothing
+      if (productsObj[product.id]) {
+        const orderDetailId = productsObj[product.id].id
+        await axios.delete(`/api/orderdetails/${orderDetailId}`)
+        dispatch(removeItem(product))
+      }
     }
   } catch (err) {
     console.error(err)
@@ -243,10 +254,16 @@ const productUpdtItemQty = (products, item, qty) => {
 export default function(state = defaultCart, action) {
   switch (action.type) {
     case GET_CART:
-      return {
-        ...state,
-        products: action.products,
-        merchantAmt: action.merchantAmt
+      // If a user is logged in, data depends on database
+      if (action.products) {
+        return {
+          ...state,
+          products: action.products,
+          merchantAmt: action.merchantAmt
+        }
+      } else {
+        // If user is a guest, data depends on local state
+        return state
       }
     case ADD_TO_CART: {
       const item = action.item // Product obj from db
