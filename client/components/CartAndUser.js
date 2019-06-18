@@ -51,7 +51,7 @@ const Cart = props => {
             <div> tax: taxhere</div>
             <div> total</div>
             checkout button
-            <button onClick={() => props.checkout(id)}> checkout</button>
+            <button> SHOULD LINK TO CHECKOUT PAGE</button>
             <ShoppingCart className={classes.icon} />
           </Paper>
         </Grid>
@@ -61,12 +61,11 @@ const Cart = props => {
 }
 
 const mapState = state => ({
-  userId: state.id || NaN
+  userId: state.id || 1
 })
 
 const mapDispatch = dispatch => ({
-  clearCart: id => dispatch(clearOrder(id)),
-  checkout: id => dispatch(checkout(id))
+  clearCart: id => dispatch(clearOrder(id))
 })
 
 export default connect(mapState, mapDispatch)(Cart)

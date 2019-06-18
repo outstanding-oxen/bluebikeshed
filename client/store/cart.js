@@ -135,29 +135,22 @@ export const addToOrder = (product, userId) => async dispatch => {
 export const decrement = (product, userId) => async dispatch => {
   try {
     if (userId) {
-      console.log('step 1')
       const res = await axios.get(`/api/users/${userId}/orders`)
       const order = res.data
       const orderDetails = order.orderDetails
 
       // Create obj w/ productIds as key to orderDetail
-      console.log('step 2')
       const productsObj = orderDetails.reduce((obj, orderDetail) => {
         obj[orderDetail.productId] = orderDetail
         return obj
       }, {})
-      console.log('step 2.5', productsObj, product.id)
       // If product qty is 1, remove item
       if (productsObj[product.id].itemQty === 1) {
-        console.log('step 3')
-
         const orderDetail = productsObj[product.id]
         await axios.delete(`/api/orderdetails/${orderDetail.id}`)
 
         // Otherwise, update database if the product exist in the order
       } else if (productsObj[product.id]) {
-        console.log('step 4')
-
         const orderDetail = productsObj[product.id]
         await axios.put(`/api/orderdetails/${orderDetail.id}`, {
           itemQty: orderDetail.itemQty - 1,
@@ -246,17 +239,21 @@ export const removeProduct = (product, userId) => async dispatch => {
 }
 
 export const clearOrder = userId => async dispatch => {
+  console.log('yohoho')
   try {
     // If user is logged in, delete orderDetails in database
     if (userId) {
-      const res = await axios.get(`/api/users/${userId.id}/orders`)
+      console.log('step 1')
+      const res = await axios.get(`/api/users/${userId}/orders`)
       const order = res.data
       const orderDetails = order.orderDetails
+      console.log('right place', orderDetails)
 
       for (let i = 0; i < orderDetails.length; i++) {
         const orderDetailId = orderDetails[i].id
         await axios.delete(`/api/orderdetails/${orderDetailId}`)
       }
+      console.log('right place2')
     }
     dispatch(clearCart())
   } catch (err) {
