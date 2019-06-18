@@ -7,7 +7,6 @@ import axios from 'axios'
 const GET_CART = 'GET_CART'
 const ADD_TO_CART = 'ADD_TO_CART'
 const CLEAR_CART = 'CLEAR_CART'
-const INCREMENT_ITEM = 'INCREMENT_ITEM'
 const DECREMENT_ITEM = 'DECREMENT_ITEM'
 const REMOVE_ITEM = 'REMOVE_ITEM'
 const UPDATE_QUANTITY = 'UPDATE_QUANTITY'
@@ -42,14 +41,9 @@ const clearCart = () => ({
   type: CLEAR_CART
 })
 
-const incrementItem = item => ({
-  type: INCREMENT_ITEM,
-  item
-})
-
 const decrementItem = item => ({
   type: DECREMENT_ITEM,
-  item
+  item // Should be instance of Product model
 })
 
 const removeItem = item => ({
@@ -129,6 +123,34 @@ export const addToOrder = (product, userId) => async dispatch => {
       }
     }
     dispatch(addToCart(product))
+  } catch (err) {
+    console.error(err)
+  }
+}
+
+export const decrement = (product, userId) => async dispatch => {
+  try {
+    if (userId) {
+      const res = await axios.get(`/api/user/${userId}/orders`)
+      const order = res.data
+      const orderDetails = order.orderDetails
+
+      // Create obj w/ productIds as key to orderDetail
+      const productsObj = orderDetails.reduce((obj, orderDetail) => {
+        obj[orderDetail.productId] = orderDetail
+        return obj
+      }, {})
+
+      // Only update the database if the product exist in the order
+      if (productsObj[product.id]) {
+        const orderDetail = productsObj[product.id]
+        await axios.put(`/api/orderdetails/${orderDetail.id}`, {
+          itemQty: orderDetail.itemQty - 1,
+          itemExtAmt: orderDetail.itemExtAmt - orderDetail.itemUnitAmt
+        })
+      }
+    }
+    dispatch(decrementItem(product))
   } catch (err) {
     console.error(err)
   }
@@ -303,11 +325,18 @@ export default function(state = defaultCart, action) {
         }
       }
     }
-    case INCREMENT_ITEM: {
-      const productPrice = action.item
-      return {
-        ...state,
-        merchantAmt: state.merchantAmt + action.item.product.price
+    case DECREMENT_ITEM: {
+      const item = action.item
+      // If item exists in cart, decrement qty and update price
+      if (state.products[item.id]) {
+        return {
+          ...state,
+          merchantAmt: state.merchantAmt - item.price,
+          products: {...state.products, [item.id]: state.products[item.id] - 1}
+        }
+      } else {
+        // Otherwise, do nothing and return state
+        return state
       }
     }
     case REMOVE_ITEM: {
