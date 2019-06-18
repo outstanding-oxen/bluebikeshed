@@ -161,23 +161,17 @@ export const decrement = (product, userId) => async dispatch => {
 }
 
 export const checkout = (cart, userId) => async dispatch => {
-  // Currently the thunk only updates the order to "completed"
-  // This thunk will need to be updated for future tiers because
-  // completedOrder will be used to:
-  //  1. charge customer
-  //  2. notify warehouse what products to ship to customer
   try {
-    // If user is logged in, update order from pending to completed
+    // If user is logged in, update order from pending to completed.
+    // Otherwise create a new order and orderDetails (associated to orderId)
     if (userId) {
       await axios.put(`/api/orders/${userId}`, {
         isFulfilled: 'completed'
       })
-      const completedOrder = res.data
     } else {
-      // Things to consider: we should create a new user and associate with order
-      //  However, this means more information must be passed into thunk
+      // If user is not logged in, create order and orderDetails
 
-      // First we create a new order and mark it as complete
+      // 1. First we create a new order and mark it as complete
       const {merchantAmt, tax, shippingAmt, totalAmt, products} = cart
       const res = await axios.post('/api/orders', {
         merchantAmt,
@@ -188,16 +182,15 @@ export const checkout = (cart, userId) => async dispatch => {
       })
       const order = res.data
 
-      // Then we create new orderDetails and associate it with the orderId
-      //  Currently, the itemUnitAmt is marked undefined. We need to pass in
-      //  more info to thunk to determine unit price (or we need to make
-      //  another axios request - which I think we should avoid)
+      // 2. Then we create new orderDetails and associate it with the orderId
       for (let key in products) {
-        if (Object.prototype.hasOwnProperty.call(foo, key)) {
+        if (products.hasOwnProperty(key)) {
+          const product = await axios.get(`/api/products/${key}`)
           await axios.post(`/api/orderdetails/${order.id}`, {
-            itemUnitAmt: undefined, // Need to product[] to thunk argument
+            itemUnitAmt: product.price,
+            itemExtAmt: product.price * products[key],
             itemQty: products[key],
-            productId: [key]
+            productId: [+key]
           })
         }
       }
