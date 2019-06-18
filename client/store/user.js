@@ -16,6 +16,7 @@ const defaultUser = {}
  * ACTION CREATORS
  */
 const getUser = user => ({type: GET_USER, user})
+const createUser = user => ({type: GET_USER, user})
 const removeUser = () => ({type: REMOVE_USER})
 
 /**
@@ -27,6 +28,28 @@ export const me = () => async dispatch => {
     dispatch(getUser(res.data || defaultUser))
   } catch (err) {
     console.error(err)
+  }
+}
+
+export const signUpUser = (
+  email,
+  password,
+  firstName,
+  lastName
+) => async dispatch => {
+  let res
+  try {
+    res = await axios.post('/api/users', {email, password, firstName, lastName})
+    console.log('created user', res.data)
+  } catch (authError) {
+    return dispatch(getUser({error: authError}))
+  }
+  try {
+    console.log('in sign up user')
+    dispatch(getUser(res.data))
+    history.push('/home')
+  } catch (error) {
+    console.error(error)
   }
 }
 
