@@ -19,7 +19,7 @@ const store = createStore(reducer, persistedState, middleware)
 // May need to use lodash throttle if system slows down.
 // How often is the store state changing?
 store.subscribe(() => {
-  saveState(store.getState().order)
+  saveState(store.getState())
 })
 
 export default store
