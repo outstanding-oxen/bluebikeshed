@@ -11,6 +11,7 @@ import SignUp from './components/SignUp'
 import AllProducts from './components/AllProducts'
 import ProductPage from './components/ProductPage'
 import Cart from './components/CartPage'
+import CheckoutPage from './components/CheckoutPage'
 /**
  * COMPONENT
  */
@@ -31,6 +32,7 @@ class Routes extends Component {
         <Route exact path="/products" component={AllProducts} />
         <Route exact path="/products/:id(\d+)" component={ProductPage} />
         <Route exact path="/cart" component={Cart} />
+        <Route exact path="/orders/checkout" component={CheckoutPage} />
         {/* <Route exact path="/products/:id(\d+)" component={SingleCampus} /> */}
 
         {isLoggedIn && (
