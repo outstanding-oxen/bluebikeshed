@@ -50,7 +50,7 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
-export default function SignUp() {
+const SignUp = props => {
   const classes = useStyles()
 
   return (
@@ -63,7 +63,7 @@ export default function SignUp() {
         <Typography component="h1" variant="h5">
           Sign up
         </Typography>
-        <form className={classes.form} noValidate>
+        <form onSubmit={props.handleSubmit} className={classes.form} noValidate>
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
               <TextField
@@ -142,3 +142,5 @@ export default function SignUp() {
     </Container>
   )
 }
+
+export default SignUp

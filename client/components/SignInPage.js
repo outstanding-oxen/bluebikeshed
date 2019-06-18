@@ -10,7 +10,6 @@ class SignInPage extends React.Component {
   }
 
   render() {
-    console.log('userid', this.props.userId)
     return <SignIn handleSubmit={this.props.handleSubmit} />
   }
 }
