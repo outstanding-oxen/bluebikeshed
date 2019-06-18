@@ -47,6 +47,7 @@ class ProductInCart extends React.Component {
       return <div>No products in cart</div>
     } else {
       const id = this.props.userId
+      console.log('hey i am id', id)
       return (
         <div>
           {cartProducts.map(product => {
