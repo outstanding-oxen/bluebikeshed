@@ -27,40 +27,45 @@ class ProductInCart extends React.Component {
     //Need this to render last item in array
     this.setState({productArray: dummyArray})
   }
-
+  decrease(product, id) {
+    console.log('hey', this.props.cart.products[product.id])
+    if (this.props.cart.products[product.id] - 1 === 0) {
+      console.log('hack')
+      this.setState({productArray: this.state.productArray})
+    }
+    this.props.decrease(product, id)
+  }
   render() {
     const cartProducts = this.state.productArray || []
-    console.log(cartProducts)
     if (cartProducts.length === 0) {
       return <div>No products in cart</div>
     } else {
       const id = this.props.userId
-      console.log('length', cartProducts.length)
 
       return (
         <div>
-          {cartProducts.map(product => {
-            return (
-              <div key={product.id}>
-                <div>{product.name}</div>
-                <div>{product.price}</div>
+          {cartProducts.map(product => (
+            <div key={product.id}>
+              <div>{product.name}</div>
+              <div>{product.price}</div>
 
-                <div>Quantity: {this.props.cart.products[product.id]}</div>
-                <button
-                  type="submit"
-                  onClick={() => this.props.increase(product, id)}
-                >
-                  Increase
-                </button>
-                <button
-                  type="submit"
-                  onClick={() => this.props.decrease(product, id)}
-                >
-                  Decrease
-                </button>
-              </div>
-            )
-          })}
+              <div>Quantity: {this.props.cart.products[product.id]}</div>
+              <button
+                type="submit"
+                onClick={() => this.props.increase(product, id)}
+              >
+                Increase
+              </button>
+              <button
+                type="submit"
+                onClick={() => {
+                  this.decrease(product, id)
+                }}
+              >
+                Decrease
+              </button>
+            </div>
+          ))}
         </div>
       )
     }
