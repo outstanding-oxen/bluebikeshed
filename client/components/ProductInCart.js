@@ -27,21 +27,37 @@ class ProductInCart extends React.Component {
     //Need this to render last item in array
     this.setState({productArray: dummyArray})
   }
+  // async componentDidUpdate() {
+  //   await this.props.getOrder(this.props.userId)
+  //   const productObj = this.props.cart.products
+  //   let dummyArray = []
 
+  //   for (let key in productObj) {
+  //     //grabs product based on product id using fetchProduct thunk
+  //     await this.props.fetchProduct(key)
+  //     let selectedProduct = this.props.selectedProduct
+  //     //adds product instance into array
+  //     dummyArray.push(selectedProduct)
+  //   }
+  //   //Need this to render last item in array
+  //   this.setState({productArray: dummyArray})
+  // }
   decrease(product, id) {
     this.props.decrease(product, id)
   }
+
   render() {
     const cartProducts = this.state.productArray || []
     if (cartProducts.length === 0) {
       return <div>No products in cart</div>
     } else {
       const id = this.props.userId
+      let cartObj = this.props.cart.products
 
       return (
         <div>
           {cartProducts.map(product => {
-            let quantity = this.props.cart.products[product.id]
+            let quantity = this.props.cart.products[product.id] || 0
             if (quantity === 0) {
               return
             }
@@ -50,7 +66,7 @@ class ProductInCart extends React.Component {
                 <div>{product.name}</div>
                 <div>{product.price}</div>
 
-                <div>Quantity: {this.props.cart.products[product.id] || 0}</div>
+                <div>Quantity: {quantity || 0}</div>
                 <button
                   type="submit"
                   onClick={() => this.props.increase(product, id)}
