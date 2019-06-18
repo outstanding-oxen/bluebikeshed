@@ -303,7 +303,7 @@ const productMinItem = (products, item) => {
   let merchSub = 0
   for (let key in products) {
     // If product key does not match item to remove, keep product
-    if (key !== item.id) {
+    if (+key !== item.id) {
       updtProduct[key] = products[key]
       // Otherwise calculate the value to remove from merchAmt
     } else {
@@ -365,6 +365,7 @@ export default function(state = defaultCart, action) {
       // If product qty is currently one, remove product
       if (state.products[item.id] === 1) {
         const [updtProduct, merchSub] = productMinItem(state.products, item)
+        console.log(updtProduct)
         return {
           ...state,
           merchantAmt: state.merchantAmt - merchSub,
