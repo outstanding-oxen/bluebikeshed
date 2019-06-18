@@ -15,18 +15,6 @@ import Container from '@material-ui/core/Container'
 import {connect} from 'react-redux'
 import {auth} from '../store/user'
 
-function MadeWithLove() {
-  return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {'Built with love by the '}
-      <Link color="inherit" href="">
-        Fullstack Academy Students
-      </Link>
-      {' team.'}
-    </Typography>
-  )
-}
-
 const useStyles = makeStyles(theme => ({
   '@global': {
     body: {
@@ -52,9 +40,21 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
+function MadeWithLove() {
+  return (
+    <Typography variant="body2" color="textSecondary" align="center">
+      {'Built with love by the '}
+      <Link color="inherit" href="">
+        Fullstack Academy Students
+      </Link>
+      {' team.'}
+    </Typography>
+  )
+}
+
 const SignIn = props => {
   const classes = useStyles()
-  console.log('userid', props.userId)
+  const {handleSubmit} = props
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
@@ -65,7 +65,7 @@ const SignIn = props => {
         <Typography component="h1" variant="h5">
           Sign in
         </Typography>
-        <form className={classes.form} noValidate>
+        <form onSubmit={handleSubmit} className={classes.form} noValidate>
           <TextField
             variant="outlined"
             margin="normal"
@@ -122,14 +122,4 @@ const SignIn = props => {
   )
 }
 
-const mapState = state => ({
-  userId: state.id
-})
-
-const mapDispatch = dispatch => ({
-  authLogin: (email, password) => dispatch(auth(email, password, 'login'))
-})
-
-export default connect(mapState, mapDispatch)(SignIn)
-
-//export default SignIn
+export default SignIn
