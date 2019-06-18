@@ -131,7 +131,7 @@ export const addToOrder = (product, userId) => async dispatch => {
 export const decrement = (product, userId) => async dispatch => {
   try {
     if (userId) {
-      const res = await axios.get(`/api/user/${userId}/orders`)
+      const res = await axios.get(`/api/users/${userId}/orders`)
       const order = res.data
       const orderDetails = order.orderDetails
 
@@ -140,7 +140,6 @@ export const decrement = (product, userId) => async dispatch => {
         obj[orderDetail.productId] = orderDetail
         return obj
       }, {})
-
       // If product qty is 1, remove item
       if (productsObj[product.id].itemQty === 1) {
         const orderDetail = productsObj[product.id]
@@ -239,7 +238,7 @@ export const clearOrder = userId => async dispatch => {
   try {
     // If user is logged in, delete orderDetails in database
     if (userId) {
-      const res = await axios.get(`/api/users/${userId.id}/orders`)
+      const res = await axios.get(`/api/users/${userId}/orders`)
       const order = res.data
       const orderDetails = order.orderDetails
 
