@@ -1,3 +1,4 @@
+/* eslint-disable complexity */
 import axios from 'axios'
 
 /**
@@ -6,6 +7,8 @@ import axios from 'axios'
 const GET_CART = 'GET_CART'
 const ADD_TO_CART = 'ADD_TO_CART'
 const CLEAR_CART = 'CLEAR_CART'
+const INCREMENT_ITEM = 'INCREMENT_ITEM'
+const DECREMENT_ITEM = 'DECREMENT_ITEM'
 const REMOVE_ITEM = 'REMOVE_ITEM'
 const UPDATE_QUANTITY = 'UPDATE_QUANTITY'
 
@@ -14,7 +17,7 @@ const UPDATE_QUANTITY = 'UPDATE_QUANTITY'
  */
 
 const defaultCart = {
-  mechantAmt: 0,
+  merchantAmt: 0,
   tax: 0,
   shippingAmt: 0,
   totalAmt: 0,
@@ -39,6 +42,16 @@ const clearCart = () => ({
   type: CLEAR_CART
 })
 
+const incrementItem = item => ({
+  type: INCREMENT_ITEM,
+  item
+})
+
+const decrementItem = item => ({
+  type: DECREMENT_ITEM,
+  item
+})
+
 const removeItem = item => ({
   type: REMOVE_ITEM,
   item // Should be instance of Product model
@@ -55,9 +68,9 @@ const updateQuantity = (item, qty) => ({
  */
 export const getOrder = userId => async dispatch => {
   try {
-    // Only interact with database if userId is not NULL (e.g. logged in)
+    // Only pulls data from database if userId is not NULL (e.g. logged in)
     if (userId) {
-      const res = await axios.get(`/api/users/:${userId}/orders`)
+      const res = await axios.get(`/api/users/${userId}/orders`)
       const order = res.data
       const orderDetails = order.orderDetails
 
@@ -74,7 +87,7 @@ export const getOrder = userId => async dispatch => {
 
       dispatch(getCart(cartObj.products, cartObj.merchantAmt))
     } else {
-      // If user is null (e.g. is a guest)
+      // If user is null (e.g. is a guest) pass in null values to action creators
       dispatch(getCart(null, null))
     }
     dispatch(getCart())
@@ -140,6 +153,7 @@ export const checkout = userId => async dispatch => {
 
 export const removeProduct = (product, userId) => async dispatch => {
   try {
+    // Interacts with the database only if user is logged in
     if (userId) {
       const res = await axios.get(`/api/users/${userId}/orders`)
       const order = res.data
@@ -155,9 +169,9 @@ export const removeProduct = (product, userId) => async dispatch => {
       if (productsObj[product.id]) {
         const orderDetailId = productsObj[product.id].id
         await axios.delete(`/api/orderdetails/${orderDetailId}`)
-        dispatch(removeItem(product))
       }
     }
+    dispatch(removeItem(product))
   } catch (err) {
     console.error(err)
   }
@@ -165,15 +179,17 @@ export const removeProduct = (product, userId) => async dispatch => {
 
 export const clearOrder = userId => async dispatch => {
   try {
-    const res = await axios.get(`/api/users/${userId.id}/orders`)
-    const order = res.data
-    const orderDetails = order.orderDetails
+    // If user is logged in, delete orderDetails in database
+    if (userId) {
+      const res = await axios.get(`/api/users/${userId.id}/orders`)
+      const order = res.data
+      const orderDetails = order.orderDetails
 
-    for (let i = 0; i < orderDetails.length; i++) {
-      const orderDetailId = orderDetails[i].id
-      await axios.delete(`/api/orderdetails/${orderDetailId}`)
+      for (let i = 0; i < orderDetails.length; i++) {
+        const orderDetailId = orderDetails[i].id
+        await axios.delete(`/api/orderdetails/${orderDetailId}`)
+      }
     }
-
     dispatch(clearCart())
   } catch (err) {
     console.error(err)
@@ -186,32 +202,35 @@ export const updateProductQuantity = (
   userId
 ) => async dispatch => {
   try {
-    const res = await axios.get(`/api/users/${userId}/orders`)
-    const order = res.data
-    const orderDetails = order.orderDetails
+    // If user is logged in, update the orderDetail quantity
+    if (userId) {
+      const res = await axios.get(`/api/users/${userId}/orders`)
+      const order = res.data
+      const orderDetails = order.orderDetails
 
-    // Create obj w/ productIds as key to orderDetail
-    const productsObj = orderDetails.reduce((obj, orderDetail) => {
-      obj[orderDetail.productId] = orderDetail
-      return obj
-    }, {})
+      // Create obj w/ productIds as key to orderDetail
+      const productsObj = orderDetails.reduce((obj, orderDetail) => {
+        obj[orderDetail.productId] = orderDetail
+        return obj
+      }, {})
 
-    if (productsObj[product.id]) {
-      const orderDetail = productsObj[product.id]
-      const orderDetailId = orderDetail.id
+      if (productsObj[product.id]) {
+        const orderDetail = productsObj[product.id]
+        const orderDetailId = orderDetail.id
 
-      // If qty is 0 delete the orderDetail
-      if (!qty) {
-        await axios.delete(`/api/orderdetails/${orderDetailId}`)
-      } else {
-        const updtAmt = qty * orderDetail.itemUnitAmt
-        await axios.put(`/api/orderdetails/${orderDetailId}`, {
-          itemExtAmt: updtAmt,
-          itemQty: qty
-        })
-        dispatch(updateQuantity(product, qty))
+        // If qty is 0 delete the orderDetail
+        if (!qty) {
+          await axios.delete(`/api/orderdetails/${orderDetailId}`)
+        } else {
+          const updtAmt = qty * orderDetail.itemUnitAmt
+          await axios.put(`/api/orderdetails/${orderDetailId}`, {
+            itemExtAmt: updtAmt,
+            itemQty: qty
+          })
+        }
       }
     }
+    dispatch(updateQuantity(product, qty))
   } catch (err) {
     console.error(err)
   }
@@ -270,12 +289,11 @@ export default function(state = defaultCart, action) {
       // Exists in cart, update qty
       if (state.products[item.id]) {
         // products = [{pId: pQty}]
-        const stateCopy = {
+        return {
           ...state,
-          merchantAmt: state.merchantAmt + item.price
+          merchantAmt: state.merchantAmt + item.price,
+          products: {...state.products, [item.id]: state.products[item.id] + 1}
         }
-        stateCopy.products[item.id]++
-        return stateCopy
         // Doesn't exist in cart, add to cart
       } else {
         return {
@@ -283,6 +301,13 @@ export default function(state = defaultCart, action) {
           merchantAmt: state.merchantAmt + item.price,
           products: {...state.products, [item.id]: 1}
         }
+      }
+    }
+    case INCREMENT_ITEM: {
+      const productPrice = action.item
+      return {
+        ...state,
+        merchantAmt: state.merchantAmt + action.item.product.price
       }
     }
     case REMOVE_ITEM: {

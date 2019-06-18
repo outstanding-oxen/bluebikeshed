@@ -17,16 +17,13 @@ class ProductPage extends React.Component {
     this.props.getProduct(this.props.match.params.id)
   }
 
-  addToCard(product, UserId) {
-    console.log('llllllll')
-
-    if (!UserId) UserId = 2
-    this.props.addToCart(product, UserId)
-  }
+  // addToCard(product, UserId = null) {
+  //   this.props.addToCart(product, UserId)
+  // }
   onSubmit(event) {
     try {
-      console.log('ergjnegjnerogerogk')
-      this.addToCard(this.props.product)
+      this.props.addToCart(this.props.product, this.props.user.id)
+      // this.addToCard(this.props.product)
       // this.props.addToCard(this.props.product, null)
     } catch (err) {
       console.error(err)
@@ -45,7 +42,8 @@ class ProductPage extends React.Component {
 }
 
 const mapState = state => ({
-  product: state.selectedProduct || {}
+  product: state.selectedProduct || {},
+  user: state.user
 })
 
 const mapDispatch = dispatch => ({

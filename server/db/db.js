@@ -10,9 +10,7 @@ const db = new Sequelize(
   process.env.DATABASE_URL || `postgres://localhost:5432/${databaseName}`,
   {
     logging: false,
-    dialect: 'postgres',
-    username: 'user',
-    password: '12345'
+    dialect: 'postgres'
   }
 )
 module.exports = db
