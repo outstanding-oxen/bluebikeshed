@@ -141,8 +141,13 @@ export const decrement = (product, userId) => async dispatch => {
         return obj
       }, {})
 
-      // Only update the database if the product exist in the order
-      if (productsObj[product.id]) {
+      // If product qty is 1, remove item
+      if (productsObj[product.id].itemQty === 1) {
+        const orderDetail = productsObj[product.id]
+        await axios.delete(`/api/orderdetails/${orderDetail.id}`)
+
+        // Otherwise, update database if the product exist in the order
+      } else if (productsObj[product.id]) {
         const orderDetail = productsObj[product.id]
         await axios.put(`/api/orderdetails/${orderDetail.id}`, {
           itemQty: orderDetail.itemQty - 1,
@@ -298,7 +303,7 @@ const productMinItem = (products, item) => {
   const updtProduct = {}
   let merchSub = 0
   for (let key in products) {
-    // If product key does not match item to remove, add to new product
+    // If product key does not match item to remove, keep product
     if (key !== item.id) {
       updtProduct[key] = products[key]
       // Otherwise calculate the value to remove from merchAmt
@@ -358,8 +363,16 @@ export default function(state = defaultCart, action) {
     }
     case DECREMENT_ITEM: {
       const item = action.item
-      // If item exists in cart, decrement qty and update price
-      if (state.products[item.id]) {
+      // If product qty is currently one, remove product
+      if (state.products[item.id] === 1) {
+        const [updtProduct, merchSub] = productMinItem(state.products, item)
+        return {
+          ...state,
+          merchantAmt: state.merchantAmt - merchSub,
+          products: updtProduct
+        }
+        // If item exists in cart, decrement qty and update price
+      } else if (state.products[item.id]) {
         return {
           ...state,
           merchantAmt: state.merchantAmt - item.price,

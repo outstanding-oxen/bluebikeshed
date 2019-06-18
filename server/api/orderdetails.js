@@ -10,14 +10,28 @@ router.post('/:id', (req, res, next) => {
     .catch(next)
 })
 
-// update orderDetail for a give orderDetail id
+// update orderDetail for a given orderDetail id
 router.put('/:id', async (req, res, next) => {
-  let updtVal = req.body
-  let updtOrderArr = await OrderDetail.update(updtVal, {
-    returning: true,
-    where: {id: req.params.id}
-  })
-  res.status(201).json(updtOrderArr[1])
+  try {
+    let updtVal = req.body
+    let updtOrderArr = await OrderDetail.update(updtVal, {
+      returning: true,
+      where: {id: req.params.id}
+    })
+    res.status(201).json(updtOrderArr[1])
+  } catch (err) {
+    next(err)
+  }
+})
+
+// delete orderDetail row for a given orderDetail id
+router.delete('/:id', async (req, res, next) => {
+  try {
+    await OrderDetail.destroy({where: {id: req.params.id}})
+    res.sendStatus(200)
+  } catch (err) {
+    next(err)
+  }
 })
 
 module.exports = router
