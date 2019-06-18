@@ -113,12 +113,19 @@ const AdapterLink = React.forwardRef((props, ref) => (
   <Link innerRef={ref} {...props} />
 ))
 
-const Navbar = ({handleClick, isLoggedIn}) => {
+const Navbar = ({handleClick, isLoggedIn, products}) => {
   const classes = useStyles()
   const [anchorEl, setAnchorEl] = React.useState(null)
 
   function handleMenuClick(event) {
     setAnchorEl(event.currentTarget)
+  }
+
+  let res
+  if (Object.keys(products).length === 0) {
+    res = 0
+  } else {
+    res = Object.values(products).reduce((acc, next) => acc + next)
   }
 
   function handleMenuClose() {
@@ -197,7 +204,7 @@ const Navbar = ({handleClick, isLoggedIn}) => {
               aria-label="Cart"
               style={{color: 'white'}}
             >
-              <StyledBadge badgeContent={2} color="primary">
+              <StyledBadge badgeContent={res} color="primary">
                 <ShoppingCartIcon />
               </StyledBadge>
             </IconButton>
@@ -222,7 +229,8 @@ const Navbar = ({handleClick, isLoggedIn}) => {
 
 const mapState = state => {
   return {
-    isLoggedIn: !!state.user.id
+    isLoggedIn: !!state.user.id,
+    products: state.cart.products
   }
 }
 
