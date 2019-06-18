@@ -116,7 +116,6 @@ const AdapterLink = React.forwardRef((props, ref) => (
 const Navbar = ({handleClick, isLoggedIn, products}) => {
   const classes = useStyles()
   const [anchorEl, setAnchorEl] = React.useState(null)
-  console.log('CHECK', products)
 
   function handleMenuClick(event) {
     setAnchorEl(event.currentTarget)
@@ -124,14 +123,10 @@ const Navbar = ({handleClick, isLoggedIn, products}) => {
 
   let res
   if (Object.keys(products).length === 0) {
-    // res = Object.values(products).reduce((acc, next) => acc + next)
-    // res = 'hey'
     res = 0
   } else {
     res = Object.values(products).reduce((acc, next) => acc + next)
   }
-
-  console.log('result', res)
 
   function handleMenuClose() {
     setAnchorEl(null)
