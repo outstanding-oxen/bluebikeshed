@@ -7,52 +7,66 @@ import {fetchProduct} from '../store/selectedProduct'
 class ProductInCart extends React.Component {
   constructor() {
     super()
-    this.productArray = []
-    this.productQuantityObj = {}
-    this.productObj = {}
+    this.state = {
+      productArray: []
+    }
   }
 
   async componentDidMount() {
     await this.props.getOrder(this.props.userId)
     const productObj = this.props.cart.products
-    this.productQuantityObj = productObj
+    let dummyArray = []
 
     for (let key in productObj) {
       //grabs product based on product id using fetchProduct thunk
       await this.props.fetchProduct(key)
       let selectedProduct = this.props.selectedProduct
       //adds product instance into array
-      this.productArray.push(selectedProduct)
-      this.productObj[key] = selectedProduct
-      //console.log('within for looop', this.productArray)
+      dummyArray.push(selectedProduct)
     }
-    //console.log('adivce', this.productArray)
-    // let test = Object.keys(this.props.cart.products)
-    // console.log('what', test)
+    //Need this to render last item in array
+    this.setState({productArray: dummyArray})
+  }
+  // async componentDidUpdate() {
+  //   await this.props.getOrder(this.props.userId)
+  //   const productObj = this.props.cart.products
+  //   let dummyArray = []
+
+  //   for (let key in productObj) {
+  //     //grabs product based on product id using fetchProduct thunk
+  //     await this.props.fetchProduct(key)
+  //     let selectedProduct = this.props.selectedProduct
+  //     //adds product instance into array
+  //     dummyArray.push(selectedProduct)
+  //   }
+  //   //Need this to render last item in array
+  //   this.setState({productArray: dummyArray})
+  // }
+  decrease(product, id) {
+    this.props.decrease(product, id)
   }
 
   render() {
-    const cartProducts = this.productArray || []
-    //const cartProducts = Object.keys(this.props.cart.products) || []
-
+    const cartProducts = this.state.productArray || []
     if (cartProducts.length === 0) {
       return <div>No products in cart</div>
     } else {
       const id = this.props.userId
-      //console.log('isnide', cartProducts, cartProducts.length)
-      // let product = this.productObj
-      // console.log('loook here')
-      // console.log(product)
-      // console.log(cartProducts)
+      let cartObj = this.props.cart.products
+
       return (
         <div>
           {cartProducts.map(product => {
+            let quantity = this.props.cart.products[product.id] || 0
+            if (quantity === 0) {
+              return
+            }
             return (
               <div key={product.id}>
                 <div>{product.name}</div>
                 <div>{product.price}</div>
 
-                <div>Quantity: {this.props.cart.products[product.id]}</div>
+                <div>Quantity: {quantity || 0}</div>
                 <button
                   type="submit"
                   onClick={() => this.props.increase(product, id)}
@@ -61,7 +75,7 @@ class ProductInCart extends React.Component {
                 </button>
                 <button
                   type="submit"
-                  onClick={() => this.props.decrease(product, id)}
+                  onClick={() => this.decrease(product, id)}
                 >
                   Decrease
                 </button>
@@ -89,63 +103,63 @@ const mapDispatch = dispatch => ({
 
 export default connect(mapState, mapDispatch)(ProductInCart)
 
-class ProductInCart1 extends React.Component {
-  constructor() {
-    super()
-    this.productArray = []
-    this.productQuantityObj = {}
-  }
+// class ProductInCart1 extends React.Component {
+//   constructor() {
+//     super()
+//     this.productArray = []
+//     this.productQuantityObj = {}
+//   }
 
-  async componentDidMount() {
-    await this.props.getOrder(this.props.userId)
-    const productObj = this.props.cart.products
-    this.productQuantityObj = productObj
+//   async componentDidMount() {
+//     await this.props.getOrder(this.props.userId)
+//     const productObj = this.props.cart.products
+//     this.productQuantityObj = productObj
 
-    for (let key in productObj) {
-      //grabs product based on product id using fetchProduct thunk
-      await this.props.fetchProduct(key)
-      let selectedProduct = this.props.selectedProduct
-      selectedProduct.quantity = productObj[key]
-      //adds product instance into array
-      this.productArray.push(selectedProduct)
-      //console.log('within for looop', this.productArray)
-    }
-    //console.log('adivce', this.productArray)
-  }
+//     for (let key in productObj) {
+//       //grabs product based on product id using fetchProduct thunk
+//       await this.props.fetchProduct(key)
+//       let selectedProduct = this.props.selectedProduct
+//       selectedProduct.quantity = productObj[key]
+//       //adds product instance into array
+//       this.productArray.push(selectedProduct)
+//       //console.log('within for looop', this.productArray)
+//     }
+//     //console.log('adivce', this.productArray)
+//   }
 
-  render() {
-    const cartProducts = this.productArray || []
-    if (cartProducts.length === 0) {
-      return <div>No products in cart</div>
-    } else {
-      const id = this.props.userId
-      //console.log('isnide', cartProducts, cartProducts.length)
-      return (
-        <div>
-          {cartProducts.map(product => {
-            return (
-              <div key={product.id}>
-                <div>{product.name}</div>
-                <div>{product.price}</div>
+//   render() {
+//     const cartProducts = this.productArray || []
+//     if (cartProducts.length === 0) {
+//       return <div>No products in cart</div>
+//     } else {
+//       const id = this.props.userId
+//       //console.log('isnide', cartProducts, cartProducts.length)
+//       return (
+//         <div>
+//           {cartProducts.map(product => {
+//             return (
+//               <div key={product.id}>
+//                 <div>{product.name}</div>
+//                 <div>{product.price}</div>
 
-                <div>Quantity: {this.productQuantityObj[product.id]}</div>
-                <button
-                  type="submit"
-                  onClick={() => this.props.increase(product, id)}
-                >
-                  Increase
-                </button>
-                <button
-                  type="submit"
-                  onClick={() => this.props.decrease(product, id)}
-                >
-                  Decrease
-                </button>
-              </div>
-            )
-          })}
-        </div>
-      )
-    }
-  }
-}
+//                 <div>Quantity: {this.productQuantityObj[product.id]}</div>
+//                 <button
+//                   type="submit"
+//                   onClick={() => this.props.increase(product, id)}
+//                 >
+//                   Increase
+//                 </button>
+//                 <button
+//                   type="submit"
+//                   onClick={() => this.props.decrease(product, id)}
+//                 >
+//                   Decrease
+//                 </button>
+//               </div>
+//             )
+//           })}
+//         </div>
+//       )
+//     }
+//   }
+// }
