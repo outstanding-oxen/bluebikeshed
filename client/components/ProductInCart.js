@@ -30,10 +30,11 @@ class ProductInCart extends React.Component {
 
   async componentDidMount() {
     for (let key in this.props.productsInCart) {
-      //grabs product based on product id
+      //grabs product based on product id using fetchProduct thunk
       await this.props.fetchProduct(key)
       let selectedProduct = this.props.selectedProduct
       selectedProduct.quantity = this.props.productsInCart[key]
+      //adds product instance into array
       this.productArray.push(selectedProduct)
     }
     console.log('productArray', this.productArray)

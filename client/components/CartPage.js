@@ -10,7 +10,7 @@ import ProductInCart from './ProductInCart'
 import ShoppingCart from '@material-ui/icons/ShoppingCartRounded'
 import Clear from '@material-ui/icons/Clear'
 import RenderToLayer from 'material-ui/internal/RenderToLayer'
-import Cart from './Cart'
+import CartAndUser from './CartAndUser'
 import {fetchProduct} from '../store/selectedProduct'
 
 const useStyles = makeStyles(theme => ({
@@ -97,7 +97,7 @@ const CartPage = props => {
   const productArray = Object.keys(props.products)
   return (
     <div>
-      <Cart />
+      <CartAndUser />
       <ProductInCart
         productsInCart={dummyProducts1}
         /* updateFunction={this.updateProductQuantity} */
