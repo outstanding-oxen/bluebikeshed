@@ -3,10 +3,11 @@ import {createLogger} from 'redux-logger'
 import thunkMiddleware from 'redux-thunk'
 import {composeWithDevTools} from 'redux-devtools-extension'
 import user from './user'
+import cart from './cart'
 import product from './product'
 import selectedProduct from './selectedProduct'
 
-const reducer = combineReducers({user, product, selectedProduct})
+const reducer = combineReducers({user, cart, product, selectedProduct})
 import {loadState, saveState} from './localStorage'
 
 // What persistedState will be will depend on how we design our state
