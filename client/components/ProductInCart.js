@@ -25,20 +25,23 @@ class ProductInCart extends React.Component {
   constructor(props) {
     super()
     this.productArray = []
+    console.log('add to order', this.props)
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     for (let key in this.props.productsInCart) {
-      let product = this.props.fetchProduct(key)
-      product.quanity = this.props.productsInCart[key]
-      this.productArray.push(product)
+      //grabs product based on product id
+      await this.props.fetchProduct(key)
+      let selectedProduct = this.props.selectedProduct
+      selectedProduct.quantity = this.props.productsInCart[key]
+      this.productArray.push(selectedProduct)
     }
-    console.log('yohoho', this.productArray)
+    console.log('productArray', this.productArray)
   }
 
   render() {
-    const cartProducts = this.props.productsInCart
-
+    const cartProducts = this.productArray || []
+    console.log('i am cart products', cartProducts)
     if (cartProducts.length === 0) {
       return <div>No products in cart</div>
     } else {
@@ -47,20 +50,20 @@ class ProductInCart extends React.Component {
         <div>
           {cartProducts.map(product => {
             return (
-              <div key={product.sku}>
+              <div key={product.id}>
                 <div>{product.name}</div>
                 <div>{product.price}</div>
 
-                <div>Quantity: {product.quantity}</div>
+                <div>Quantity: {this.props.productsInCart[product.id]}</div>
                 <button
                   type="submit"
-                  onSubmit={() => this.props.addToOrder(id, product.id)}
+                  onClick={() => this.props.increase(product, id)}
                 >
                   Increase
                 </button>
                 <button
                   type="submit"
-                  onSubmit={() => this.props.decrease(id, product.id)}
+                  onClick={() => this.props.decrease(id, product.id)}
                 >
                   Decrease
                 </button>
@@ -74,8 +77,8 @@ class ProductInCart extends React.Component {
 }
 
 const mapState = state => ({
-  cartProducts: state.cart || [], //UPDATE AS NEEDED
-  userId: state.id || 12345
+  userId: state.id || 1, //comment out when have user id
+  selectedProduct: state.selectedProduct || {}
 })
 
 const mapDispatch = dispatch => ({

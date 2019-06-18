@@ -93,13 +93,13 @@ const CartPage = props => {
       quantity: 398
     }
   ]
-  const dummyProducts1 = []
+  const dummyProducts1 = {1: 1, 2: 2, 3: 3, 4: 5, 10: 4}
   const productArray = Object.keys(props.products)
   return (
     <div>
       <Cart />
       <ProductInCart
-        productsInCart={dummyProducts}
+        productsInCart={dummyProducts1}
         /* updateFunction={this.updateProductQuantity} */
       />
     </div>

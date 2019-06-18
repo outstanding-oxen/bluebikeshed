@@ -84,6 +84,7 @@ export const getOrder = userId => async dispatch => {
 }
 
 export const addToOrder = (product, userId) => async dispatch => {
+  console.log('i started')
   try {
     // If userId is not null (e.g. user is logged in)
     if (userId) {
@@ -101,11 +102,14 @@ export const addToOrder = (product, userId) => async dispatch => {
       // If orderDetail with productId exists, update qty
       // Otherwise, add product as new orderDetail to order
       if (productsObj[product.id]) {
+        console.log('i entered correct spot')
         const orderDetail = productsObj[product.id]
+        console.log('step 2', orderDetail)
         await axios.put(`/api/orderdetails/${orderDetail.id}`, {
           itemQty: orderDetail.itemQty + 1,
           itemExtAmt: orderDetail.itemExtAmt + orderDetail.itemUnitAmt
         })
+        console.log('step 3')
       } else {
         await axios.post(`/api/orderdetails/${order.id}`, {
           itemUnitAmt: product.price,

@@ -27,7 +27,9 @@ router.get('/:id', async (req, res, next) => {
 })
 
 router.get('/:id/orders', async (req, res, next) => {
-  const id = req.params.id
+  const id = parseInt(req.params.id.slice(1))
+  console.log('ID IS HERE', id)
+  console.log('type', typeof id)
 
   try {
     const user = await Order.findOne({
