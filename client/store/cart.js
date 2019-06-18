@@ -156,17 +156,48 @@ export const decrement = (product, userId) => async dispatch => {
   }
 }
 
-export const checkout = userId => async dispatch => {
+export const checkout = (cart, userId) => async dispatch => {
   // Currently the thunk only updates the order to "completed"
   // This thunk will need to be updated for future tiers because
   // completedOrder will be used to:
   //  1. charge customer
   //  2. notify warehouse what products to ship to customer
   try {
-    const res = await axios.put(`/api/orders/${userId}`, {
-      isFulfilled: 'completed'
-    })
-    const completedOrder = res.data
+    // If user is logged in, update order from pending to completed
+    if (userId) {
+      await axios.put(`/api/orders/${userId}`, {
+        isFulfilled: 'completed'
+      })
+      const completedOrder = res.data
+    } else {
+      // Things to consider: we should create a new user and associate with order
+      //  However, this means more information must be passed into thunk
+
+      // First we create a new order and mark it as complete
+      const {merchantAmt, tax, shippingAmt, totalAmt, products} = cart
+      const res = await axios.post('/api/orders', {
+        merchantAmt,
+        tax,
+        shippingAmt,
+        totalAmt,
+        isFulfilled: 'completed'
+      })
+      const order = res.data
+
+      // Then we create new orderDetails and associate it with the orderId
+      //  Currently, the itemUnitAmt is marked undefined. We need to pass in
+      //  more info to thunk to determine unit price (or we need to make
+      //  another axios request - which I think we should avoid)
+      for (let key in products) {
+        if (Object.prototype.hasOwnProperty.call(foo, key)) {
+          await axios.post(`/api/orderdetails/${order.id}`, {
+            itemUnitAmt: undefined, // Need to product[] to thunk argument
+            itemQty: products[key],
+            productId: [key]
+          })
+        }
+      }
+    }
     dispatch(clearCart())
   } catch (err) {
     console.error(err)

@@ -1,3 +1,5 @@
+/* eslint-disable max-statements */
+/* eslint-disable no-unused-vars */
 'use strict'
 
 const db = require('../server/db')
