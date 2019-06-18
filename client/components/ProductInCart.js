@@ -3,7 +3,7 @@ import {makeStyles} from '@material-ui/core/styles'
 
 import DeleteIcon from '@material-ui/icons/DeleteForeverRounded'
 import {connect} from 'react-redux'
-import {checkout, addToOrder, decrease} from '../store/cart'
+import {checkout, addToOrder, decrement} from '../store/cart'
 import {fetchProduct} from '../store/selectedProduct'
 
 const useStyles = makeStyles(theme => ({
@@ -65,7 +65,7 @@ class ProductInCart extends React.Component {
                 </button>
                 <button
                   type="submit"
-                  onClick={() => this.props.decrease(id, product.id)}
+                  onClick={() => this.props.decrease(product, id)}
                 >
                   Decrease
                 </button>
@@ -86,7 +86,7 @@ const mapState = state => ({
 const mapDispatch = dispatch => ({
   checkout: id => dispatch(checkout(id)),
   increase: (userId, productId) => dispatch(addToOrder(userId, productId)),
-  decrease: (userId, productId) => dispatch(decrease(userId, productId)),
+  decrease: (userId, productId) => dispatch(decrement(userId, productId)),
   fetchProduct: productId => dispatch(fetchProduct(productId))
 })
 

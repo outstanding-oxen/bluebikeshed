@@ -135,23 +135,29 @@ export const addToOrder = (product, userId) => async dispatch => {
 export const decrement = (product, userId) => async dispatch => {
   try {
     if (userId) {
-      const res = await axios.get(`/api/user/${userId}/orders`)
+      console.log('step 1')
+      const res = await axios.get(`/api/users/${userId}/orders`)
       const order = res.data
       const orderDetails = order.orderDetails
 
       // Create obj w/ productIds as key to orderDetail
+      console.log('step 2')
       const productsObj = orderDetails.reduce((obj, orderDetail) => {
         obj[orderDetail.productId] = orderDetail
         return obj
       }, {})
-
+      console.log('step 2.5', productsObj, product.id)
       // If product qty is 1, remove item
       if (productsObj[product.id].itemQty === 1) {
+        console.log('step 3')
+
         const orderDetail = productsObj[product.id]
         await axios.delete(`/api/orderdetails/${orderDetail.id}`)
 
         // Otherwise, update database if the product exist in the order
       } else if (productsObj[product.id]) {
+        console.log('step 4')
+
         const orderDetail = productsObj[product.id]
         await axios.put(`/api/orderdetails/${orderDetail.id}`, {
           itemQty: orderDetail.itemQty - 1,
