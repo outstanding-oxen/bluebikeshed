@@ -1,3 +1,4 @@
+/* eslint-disable guard-for-in */
 import React from 'react'
 
 import {connect} from 'react-redux'
@@ -47,35 +48,41 @@ class ProductInCart extends React.Component {
   }
 
   render() {
-    const cartProducts = this.state.productArray || []
-    if (cartProducts.length === 0) {
+    // const cartProducts = this.state.productArray
+    const prodObj = this.state.productArray.reduce((obj, product) => {
+      obj[product.id] = product
+      return obj
+    }, {}) // intial rendering, prodObj = {}
+
+    const cartObj = this.props.cart.products
+
+    if (
+      Object.keys(cartObj).length === 0 ||
+      Object.keys(prodObj).length === 0
+    ) {
       return <div>No products in cart</div>
-    } else {
+    } else if (Object.keys(prodObj).length) {
       const id = this.props.userId
-      let cartObj = this.props.cart.products
 
       return (
         <div>
-          {cartProducts.map(product => {
-            let quantity = this.props.cart.products[product.id] || 0
-            if (quantity === 0) {
-              return
-            }
+          {Object.keys(cartObj).map(productId => {
+            let quantity = cartObj[productId]
             return (
-              <div key={product.id}>
-                <div>{product.name}</div>
-                <div>{product.price}</div>
+              <div key={productId}>
+                <div>{prodObj[productId].name}</div>
+                <div>{prodObj[productId].price}</div>
 
-                <div>Quantity: {quantity || 0}</div>
+                <div>Quantity: {quantity}</div>
                 <button
                   type="submit"
-                  onClick={() => this.props.increase(product, id)}
+                  onClick={() => this.props.increase(prodObj[productId], id)}
                 >
                   Increase
                 </button>
                 <button
                   type="submit"
-                  onClick={() => this.decrease(product, id)}
+                  onClick={() => this.decrease(prodObj[productId], id)}
                 >
                   Decrease
                 </button>
@@ -89,7 +96,8 @@ class ProductInCart extends React.Component {
 }
 
 const mapState = state => ({
-  userId: state.id || 1, //comment out when have user id
+  userId: state.user.id,
+  // userId: state.id || 1, //comment out when have user id
   selectedProduct: state.selectedProduct || {},
   cart: state.cart
 })
