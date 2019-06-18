@@ -27,12 +27,8 @@ class ProductInCart extends React.Component {
     //Need this to render last item in array
     this.setState({productArray: dummyArray})
   }
+
   decrease(product, id) {
-    console.log('hey', this.props.cart.products[product.id])
-    if (this.props.cart.products[product.id] - 1 === 0) {
-      console.log('hack')
-      this.setState({productArray: this.state.productArray})
-    }
     this.props.decrease(product, id)
   }
   render() {
@@ -44,28 +40,32 @@ class ProductInCart extends React.Component {
 
       return (
         <div>
-          {cartProducts.map(product => (
-            <div key={product.id}>
-              <div>{product.name}</div>
-              <div>{product.price}</div>
+          {cartProducts.map(product => {
+            let quantity = this.props.cart.products[product.id]
+            if (quantity === 0) {
+              return
+            }
+            return (
+              <div key={product.id}>
+                <div>{product.name}</div>
+                <div>{product.price}</div>
 
-              <div>Quantity: {this.props.cart.products[product.id]}</div>
-              <button
-                type="submit"
-                onClick={() => this.props.increase(product, id)}
-              >
-                Increase
-              </button>
-              <button
-                type="submit"
-                onClick={() => {
-                  this.decrease(product, id)
-                }}
-              >
-                Decrease
-              </button>
-            </div>
-          ))}
+                <div>Quantity: {this.props.cart.products[product.id] || 0}</div>
+                <button
+                  type="submit"
+                  onClick={() => this.props.increase(product, id)}
+                >
+                  Increase
+                </button>
+                <button
+                  type="submit"
+                  onClick={() => this.decrease(product, id)}
+                >
+                  Decrease
+                </button>
+              </div>
+            )
+          })}
         </div>
       )
     }
