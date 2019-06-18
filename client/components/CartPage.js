@@ -95,6 +95,7 @@ const CartPage = props => {
   ]
   const dummyProducts1 = {1: 1, 2: 2, 3: 3, 4: 5, 10: 4}
   const productArray = Object.keys(props.products)
+  //need to feed products into here
   return (
     <div>
       <CartAndUser />

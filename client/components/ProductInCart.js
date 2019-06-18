@@ -25,7 +25,6 @@ class ProductInCart extends React.Component {
   constructor(props) {
     super()
     this.productArray = []
-    console.log('add to order', this.props)
   }
 
   async componentDidMount() {
@@ -37,17 +36,14 @@ class ProductInCart extends React.Component {
       //adds product instance into array
       this.productArray.push(selectedProduct)
     }
-    console.log('productArray', this.productArray)
   }
 
   render() {
     const cartProducts = this.productArray || []
-    console.log('i am cart products', cartProducts)
     if (cartProducts.length === 0) {
       return <div>No products in cart</div>
     } else {
       const id = this.props.userId
-      console.log('hey i am id', id)
       return (
         <div>
           {cartProducts.map(product => {
@@ -85,8 +81,8 @@ const mapState = state => ({
 
 const mapDispatch = dispatch => ({
   checkout: id => dispatch(checkout(id)),
-  increase: (userId, productId) => dispatch(addToOrder(userId, productId)),
-  decrease: (userId, productId) => dispatch(decrement(userId, productId)),
+  increase: (product, userId) => dispatch(addToOrder(product, userId)),
+  decrease: (product, userId) => dispatch(decrement(product, userId)),
   fetchProduct: productId => dispatch(fetchProduct(productId))
 })
 

@@ -8,7 +8,7 @@ import {connect} from 'react-redux'
 import {fetchProduct} from '../store/selectedProduct'
 import {addToOrder} from '../store/cart'
 class ProductPage extends React.Component {
-  constructor() {
+  constructor(props) {
     super()
     this.onSubmit = this.onSubmit.bind(this)
   }
@@ -21,6 +21,7 @@ class ProductPage extends React.Component {
   //   this.props.addToCart(product, UserId)
   // }
   onSubmit(event) {
+    console.log('product page', this.props)
     try {
       this.props.addToCart(this.props.product, this.props.user.id)
       // this.addToCard(this.props.product)
@@ -43,11 +44,11 @@ class ProductPage extends React.Component {
 
 const mapState = state => ({
   product: state.selectedProduct || {},
-  user: state.user
+  user: state.id || {id: 1} //CHANGE THIS WHEN YOU CAN GET USER
 })
 
 const mapDispatch = dispatch => ({
   getProduct: id => dispatch(fetchProduct(id)),
-  addToCart: (product, UserId) => dispatch(addToOrder(product, UserId))
+  addToCart: (product, userId) => dispatch(addToOrder(product, userId))
 })
 export default connect(mapState, mapDispatch)(ProductPage)

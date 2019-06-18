@@ -28,8 +28,6 @@ router.get('/:id', async (req, res, next) => {
 
 router.get('/:id/orders', async (req, res, next) => {
   const id = req.params.id
-  console.log('ID IS HERE', id)
-  console.log('type', typeof id)
 
   try {
     const user = await Order.findOne({
