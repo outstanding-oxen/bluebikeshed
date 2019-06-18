@@ -3,6 +3,7 @@ import {makeStyles} from '@material-ui/core/styles'
 import Paper from '@material-ui/core/Paper'
 import Grid from '@material-ui/core/Grid'
 import {connect} from 'react-redux'
+import {Link} from 'react-router-dom'
 
 //below are just icons
 import ShoppingCart from '@material-ui/icons/ShoppingCartRounded'
@@ -50,8 +51,11 @@ const Cart = props => {
             <div> shipping: shipping here</div>
             <div> tax: taxhere</div>
             <div> total</div>
-            checkout button
-            <button> SHOULD LINK TO CHECKOUT PAGE</button>
+            <Link to="/orders/checkout">
+              <button type="button" className="btn btn-info">
+                Proceed To Checkout
+              </button>
+            </Link>
             <ShoppingCart className={classes.icon} />
           </Paper>
         </Grid>
