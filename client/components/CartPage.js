@@ -30,27 +30,6 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
-// class CartPage extends React.Component {
-//   constructor() {
-//     super()
-//     this.updateProductQuantity = this.updateProductQuantity.bind(this)
-//     this.removeProductFromCart = this.removeProductFromCart.bind(this)
-//     this.clearCartFunction = this.clearCartFunction.bind(this)
-//     this.checkoutCartFunction = this.checkoutCartFunction.bind(this)
-//   }
-
-//   componentDidMount() {
-//     //fetch all items in cart
-//     //output an array of products id with qty
-//     //for loop through output to grab product from axios
-//     let productIdArray = []
-//     let productArray = []
-//     for (let i = 0; i < productArray.length; i++) {
-//       let product = fetchProduct(productIdArray[i].id)
-//       product.quantity = productIdArray[i].qty
-//       productArray.push(product)
-//     }
-//   }
 const CartPage = props => {
   return (
     <div>
