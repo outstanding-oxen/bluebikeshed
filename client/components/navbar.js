@@ -113,7 +113,8 @@ const AdapterLink = React.forwardRef((props, ref) => (
   <Link innerRef={ref} {...props} />
 ))
 
-const Navbar = ({handleClick, isLoggedIn, products}) => {
+const Navbar = props => {
+  let {handleClick, isLoggedIn, products} = props
   const classes = useStyles()
   const [anchorEl, setAnchorEl] = React.useState(null)
 
@@ -131,6 +132,8 @@ const Navbar = ({handleClick, isLoggedIn, products}) => {
   function handleMenuClose() {
     setAnchorEl(null)
   }
+
+  let firstName = props.user.user ? props.user.user.firstName : 'First Name'
   return (
     <div className={classes.root}>
       <nav>
@@ -208,16 +211,33 @@ const Navbar = ({handleClick, isLoggedIn, products}) => {
                 <ShoppingCartIcon />
               </StyledBadge>
             </IconButton>
-            {/* <Link to="/login"> */}
-            <Button component={AdapterLink} to="/login" color="inherit">
-              Login
-            </Button>
-            {/* </Link> */}
-            {/* <Link to="/signup"> */}
-            <Button component={AdapterLink} to="/signup" color="inherit">
-              Sign up
-            </Button>
-            {/* </Link> */}
+            {isLoggedIn ? (
+              <div>
+                {/* <Link to="/login"> */}
+                <Button component={AdapterLink} to="/products" color="inherit">
+                  {firstName}
+                </Button>
+                {/* </Link> */}
+                {/* <Link to="/signup"> */}
+                <Button onClick={handleClick} to="/products" color="inherit">
+                  Log out
+                </Button>
+                {/* </Link> */}
+              </div>
+            ) : (
+              <div>
+                {/* <Link to="/login"> */}
+                <Button component={AdapterLink} to="/login" color="inherit">
+                  Login
+                </Button>
+                {/* </Link> */}
+                {/* <Link to="/signup"> */}
+                <Button component={AdapterLink} to="/signup" color="inherit">
+                  Sign up
+                </Button>
+                {/* </Link> */}
+              </div>
+            )}
           </Toolbar>
         </AppBar>
       </nav>
@@ -227,12 +247,11 @@ const Navbar = ({handleClick, isLoggedIn, products}) => {
 
 // CONTAINER
 
-const mapState = state => {
-  return {
-    isLoggedIn: !!state.user.id,
-    products: state.cart.products
-  }
-}
+const mapState = state => ({
+  isLoggedIn: !!state.user.id,
+  products: state.cart.products,
+  user: state.user
+})
 
 const mapDispatch = dispatch => {
   return {
