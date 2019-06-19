@@ -25,7 +25,7 @@ export const fetchProducts = () => dispatch =>
     .then(res => {
       dispatch(getProducts(res.data || defaultProducts))
     })
-    .catch(err => console.err(err))
+    .catch(err => console.error(err))
 
 /**
  * REDUCER

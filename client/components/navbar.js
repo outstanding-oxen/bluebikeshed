@@ -131,7 +131,6 @@ const Navbar = props => {
   }
 
   let firstName = props.user.firstName
-  console.log(props.user.firstName)
   return (
     <div className={classes.root}>
       <nav>
@@ -217,7 +216,11 @@ const Navbar = props => {
                 </Button>
                 {/* </Link> */}
                 {/* <Link to="/signup"> */}
-                <Button onClick={handleClick} to="/products" color="inherit">
+                <Button
+                  onClick={props.handleClick}
+                  to="/products"
+                  color="inherit"
+                >
                   Log out
                 </Button>
                 {/* </Link> */}
@@ -251,13 +254,12 @@ const mapState = state => ({
   user: state.user
 })
 
-const mapDispatch = dispatch => {
-  return {
-    handleClick() {
-      dispatch(logout())
-    }
+const mapDispatch = dispatch => ({
+  handleClick: () => {
+    localStorage.clear()
+    dispatch(logout())
   }
-}
+})
 
 export default connect(mapState, mapDispatch)(Navbar)
 
