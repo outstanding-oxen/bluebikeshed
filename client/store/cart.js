@@ -65,7 +65,9 @@ export const getOrder = userId => async dispatch => {
     // Only pulls data from database if userId is not NULL (e.g. logged in)
     if (userId) {
       const res = await axios.get(`/api/users/${userId}/orders`)
+
       const order = res.data
+
       const orderDetails = order.orderDetails
 
       const cartObj = orderDetails.reduce(

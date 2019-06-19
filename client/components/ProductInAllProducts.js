@@ -86,7 +86,7 @@ const ProductInAllProducts = props => {
                   </Box>
                 </Typography>
                 <Typography variant="body2" color="textSecondary" component="p">
-                  {product.description}
+                  {/* product.description */}
                 </Typography>
               </CardContent>
             </CardActionArea>

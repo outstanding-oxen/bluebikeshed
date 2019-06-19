@@ -30,11 +30,21 @@ router.get('/:id/orders', async (req, res, next) => {
   const id = req.params.id
 
   try {
-    const user = await Order.findOne({
+    let pendingOrder = await Order.findOne({
       where: {userId: id, isFulfilled: 'pending'},
       include: [{model: OrderDetail}]
     })
-    res.status(200).json(user)
+    if (pendingOrder === null) {
+      pendingOrder = Order.create({
+        merchantAmt: 0,
+        tax: 0.08875,
+        shippingAmt: 0,
+        totalAmt: 0,
+        isFulfilled: 'pending',
+        userId: id
+      })
+    }
+    res.status(200).json(pendingOrder)
   } catch (error) {
     next(error)
   }

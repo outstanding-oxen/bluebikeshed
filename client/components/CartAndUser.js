@@ -4,6 +4,7 @@ import Paper from '@material-ui/core/Paper'
 import Grid from '@material-ui/core/Grid'
 import {connect} from 'react-redux'
 import {Link} from 'react-router-dom'
+import {PayPalButton} from 'react-paypal-button-v2'
 
 //below are just icons
 import ShoppingCart from '@material-ui/icons/ShoppingCartRounded'
@@ -29,6 +30,11 @@ const useStyles = makeStyles(theme => ({
 
 const Cart = props => {
   const id = props.userId
+  const cart = props.cart
+  const qty = Object.values(cart.products).reduce(
+    (total, qty) => total + qty,
+    0
+  )
   const classes = useStyles()
   return (
     <div className={classes.root}>
@@ -47,15 +53,26 @@ const Cart = props => {
         <Grid item xs={3}>
           <Paper className={classes.paper} style={{height: '200px'}}>
             <div> COSTS</div>
-            <div>Subtotal (items) : (cost)</div>
-            <div> shipping: shipping here</div>
-            <div> tax: taxhere</div>
-            <div> total</div>
-            <Link to="/orders/checkout">
-              <button type="button" className="btn btn-info">
-                Proceed To Checkout
-              </button>
-            </Link>
+            <div>
+              Subtotal ({qty} items) : ${cart.merchantAmt / 100}
+            </div>
+            <br />
+            <PayPalButton
+              amount={cart.merchantAmt / 100}
+              onSuccess={(details, data) => {
+                alert(
+                  'Transaction completed by ' + details.payer.name.given_name
+                )
+
+                // OPTIONAL: Call your server to save the transaction
+                return fetch('/paypal-transaction-complete', {
+                  method: 'post',
+                  body: JSON.stringify({
+                    orderID: data.orderID
+                  })
+                })
+              }}
+            />
             <ShoppingCart className={classes.icon} />
           </Paper>
         </Grid>
@@ -65,7 +82,8 @@ const Cart = props => {
 }
 
 const mapState = state => ({
-  userId: state.id || 1
+  userId: state.id || 1,
+  cart: state.cart
 })
 
 const mapDispatch = dispatch => ({
