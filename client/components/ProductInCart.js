@@ -87,6 +87,7 @@ class ProductInCart extends React.Component {
                       <div>
                         Quantity: <b>{quantity}</b>
                       </div>
+
                       <Button
                         onClick={() =>
                           this.props.increase(prodObj[productId], id)
@@ -97,8 +98,9 @@ class ProductInCart extends React.Component {
                       <Button
                         onClick={() => this.decrease(prodObj[productId], id)}
                       >
-                        Decrease
+                        {quantity === 1 ? 'Delete' : 'Decrease'}
                       </Button>
+
                       <Divider />
                     </div>
                   )
