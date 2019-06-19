@@ -61,7 +61,6 @@ const updateQuantity = (item, qty) => ({
  * THUNK CREATOR
  */
 export const getOrder = userId => async dispatch => {
-  console.log('he')
   try {
     // Only pulls data from database if userId is not NULL (e.g. logged in)
     if (userId) {
@@ -70,7 +69,6 @@ export const getOrder = userId => async dispatch => {
       const order = res.data
 
       const orderDetails = order.orderDetails
-      console.log('getting order 2', orderDetails)
 
       const cartObj = orderDetails.reduce(
         (obj, orderDetail) => {
@@ -95,7 +93,6 @@ export const getOrder = userId => async dispatch => {
 }
 
 export const addToOrder = (product, userId) => async dispatch => {
-  console.log('addtoorder', userId)
   try {
     // If userId is not null (e.g. user is logged in)
     if (userId) {

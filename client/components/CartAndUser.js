@@ -35,8 +35,6 @@ const Cart = props => {
     (total, qty) => total + qty,
     0
   )
-  console.log(qty)
-  console.log(cart)
   const classes = useStyles()
   return (
     <div className={classes.root}>

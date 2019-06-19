@@ -29,7 +29,6 @@ const mapDispatch = (dispatch, ownProps) => {
 
       const email = evt.target.email.value
       const password = evt.target.password.value
-      console.log('HAHAHA', email, password)
       dispatch(auth(email, password, 'login')).then(() => {
         ownProps.history.push('/products')
       })
