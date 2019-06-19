@@ -71,7 +71,7 @@ class ProductInCart extends React.Component {
             return (
               <div key={productId}>
                 <div>{prodObj[productId].name}</div>
-                <div>{prodObj[productId].price}</div>
+                <div>${prodObj[productId].price / 100}</div>
 
                 <div>Quantity: {quantity}</div>
                 <button

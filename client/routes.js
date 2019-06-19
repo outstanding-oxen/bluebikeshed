@@ -11,6 +11,7 @@ import SignUpPage from './components/SignUpPage'
 import AllProducts from './components/AllProducts'
 import ProductPage from './components/ProductPage'
 import Cart from './components/CartPage'
+import MyProfile from './components/MyProfile'
 /**
  * COMPONENT
  */
@@ -35,6 +36,7 @@ class Routes extends Component {
 
         {isLoggedIn && (
           <Switch>
+            <Route exact path="/myprofile" component={MyProfile} />
             {/* Routes placed here are only available after logging in */}
             {/* <Route path="/home" component={UserHome} /> */}
           </Switch>

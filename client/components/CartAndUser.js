@@ -62,7 +62,7 @@ const Cart = props => {
               <br />
               <br />
               <PayPalButton
-                amount="0.01"
+                amount={cart.merchantAmt / 100}
                 onSuccess={(details, data) => {
                   alert(
                     'Transaction completed by ' + details.payer.name.given_name
