@@ -12,18 +12,8 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
 import Typography from '@material-ui/core/Typography'
 import {makeStyles} from '@material-ui/core/styles'
 import Container from '@material-ui/core/Container'
-
-function MadeWithLove() {
-  return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {'Built with love by the '}
-      <Link color="inherit" href="">
-        Fullstack Academy Students
-      </Link>
-      {' team.'}
-    </Typography>
-  )
-}
+import {connect} from 'react-redux'
+import {auth} from '../store/user'
 
 const useStyles = makeStyles(theme => ({
   '@global': {
@@ -50,9 +40,21 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
-export default function SignIn() {
-  const classes = useStyles()
+function MadeWithLove() {
+  return (
+    <Typography variant="body2" color="textSecondary" align="center">
+      {'Built with love by the '}
+      <Link color="inherit" href="">
+        Fullstack Academy Students
+      </Link>
+      {' team.'}
+    </Typography>
+  )
+}
 
+const SignIn = props => {
+  const classes = useStyles()
+  const {handleSubmit} = props
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
@@ -63,7 +65,7 @@ export default function SignIn() {
         <Typography component="h1" variant="h5">
           Sign in
         </Typography>
-        <form className={classes.form} noValidate>
+        <form onSubmit={handleSubmit} className={classes.form} noValidate>
           <TextField
             variant="outlined"
             margin="normal"
@@ -119,3 +121,5 @@ export default function SignIn() {
     </Container>
   )
 }
+
+export default SignIn
