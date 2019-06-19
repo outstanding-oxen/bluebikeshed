@@ -254,6 +254,7 @@ const mapState = state => ({
 const mapDispatch = dispatch => {
   return {
     handleClick() {
+      localStorage.clear()
       dispatch(logout())
     }
   }
