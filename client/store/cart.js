@@ -64,7 +64,10 @@ export const getOrder = userId => async dispatch => {
   try {
     // Only pulls data from database if userId is not NULL (e.g. logged in)
     if (userId) {
+      console.log('getting order')
       const res = await axios.get(`/api/users/${userId}/orders`)
+      console.log('getting order 2')
+
       const order = res.data
       const orderDetails = order.orderDetails
 
