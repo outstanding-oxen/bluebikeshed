@@ -5,6 +5,11 @@ import {connect} from 'react-redux'
 import {addToOrder, decrement, getOrder} from '../store/cart'
 import {fetchProduct} from '../store/selectedProduct'
 
+import {makeStyles, styled} from '@material-ui/core/styles'
+import Paper from '@material-ui/core/Paper'
+import Grid from '@material-ui/core/Grid'
+import Typography from '@material-ui/core/Typography'
+import Divider from '@material-ui/core/Divider'
 class ProductInCart extends React.Component {
   constructor() {
     super()
@@ -65,6 +70,7 @@ class ProductInCart extends React.Component {
       const id = this.props.userId
 
       return (
+
         <div>
           {Object.keys(cartObj).map(productId => {
             let quantity = cartObj[productId]
