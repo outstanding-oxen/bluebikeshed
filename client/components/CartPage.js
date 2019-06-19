@@ -44,8 +44,8 @@ const CartPage = props => {
 //export default CartPage
 
 const mapState = state => ({
-  userId: state.id || 1,
-  products: state.products || {}
+  userId: state.id,
+  products: state.products
 })
 
 const mapDispatch = dispatch => ({
