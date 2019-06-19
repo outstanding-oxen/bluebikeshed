@@ -56,29 +56,23 @@ const Cart = props => {
             <div>
               Subtotal ({qty} items) : ${cart.merchantAmt / 100}
             </div>
-            <Link to="/orders/checkout">
-              <button type="button" className="btn btn-info">
-                Proceed To Checkout
-              </button>
-              <br />
-              <br />
-              <PayPalButton
-                amount={cart.merchantAmt / 100}
-                onSuccess={(details, data) => {
-                  alert(
-                    'Transaction completed by ' + details.payer.name.given_name
-                  )
+            <br />
+            <PayPalButton
+              amount={cart.merchantAmt / 100}
+              onSuccess={(details, data) => {
+                alert(
+                  'Transaction completed by ' + details.payer.name.given_name
+                )
 
-                  // OPTIONAL: Call your server to save the transaction
-                  return fetch('/paypal-transaction-complete', {
-                    method: 'post',
-                    body: JSON.stringify({
-                      orderID: data.orderID
-                    })
+                // OPTIONAL: Call your server to save the transaction
+                return fetch('/paypal-transaction-complete', {
+                  method: 'post',
+                  body: JSON.stringify({
+                    orderID: data.orderID
                   })
-                }}
-              />
-            </Link>
+                })
+              }}
+            />
             <ShoppingCart className={classes.icon} />
           </Paper>
         </Grid>

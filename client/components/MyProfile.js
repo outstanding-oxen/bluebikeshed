@@ -20,7 +20,7 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 const MyProfile = props => {
-  console.log('hi')
+  console.log(props)
   console.log('props', props.user.firstName)
   const classes = useStyles()
 
@@ -28,17 +28,16 @@ const MyProfile = props => {
     <Grid container spacing={3}>
       <Grid item xs={12}>
         <Paper className={classes.paper} style={{height: '200px'}}>
-          <div> test</div>
-          <div> test</div>
-          <div> test</div>
           <div>
+            <br />
+            <br />
             <h1>Welcome {props.user.firstName}!</h1>
           </div>
-          <ul>
-            <li>Instagram</li>
-            <li>WhatsApp</li>
-            <li>Oculus</li>
-          </ul>
+          <h1>My Address</h1>
+          <h2>{props.user.Address[0].address}</h2>
+          <h2>{props.user.Address[0].city}</h2>
+          <h2>{props.user.Address[0].state}</h2>
+          <h2>{props.user.Address[0].zipcode}</h2>
         </Paper>
       </Grid>
     </Grid>
