@@ -5,6 +5,11 @@ import {connect} from 'react-redux'
 import {addToOrder, decrement, getOrder} from '../store/cart'
 import {fetchProduct} from '../store/selectedProduct'
 
+import {makeStyles, styled} from '@material-ui/core/styles'
+import Paper from '@material-ui/core/Paper'
+import Grid from '@material-ui/core/Grid'
+import Typography from '@material-ui/core/Typography'
+import Divider from '@material-ui/core/Divider'
 class ProductInCart extends React.Component {
   constructor() {
     super()
@@ -65,30 +70,43 @@ class ProductInCart extends React.Component {
       const id = this.props.userId
 
       return (
-        <div>
-          {Object.keys(cartObj).map(productId => {
-            let quantity = cartObj[productId]
-            return (
-              <div key={productId}>
-                <div>{prodObj[productId].name}</div>
-                <div>{prodObj[productId].price}</div>
+        <div style={{flexGrow: 1, paddingTop: '1vh'}}>
+          <Grid container spacing={3}>
+            <Grid item xs={12}>
+              <Paper>
+                {Object.keys(cartObj).map(productId => {
+                  let quantity = cartObj[productId]
+                  return (
+                    <div key={productId} style={{padding: '10px'}}>
+                      <Typography gutterBottom variant="h5" component="h2">
+                        {prodObj[productId].name}
+                      </Typography>
+                      <Typography gutterBottom variant="h5" component="h2">
+                        ${prodObj[productId].price / 100}
+                      </Typography>
 
-                <div>Quantity: {quantity}</div>
-                <button
-                  type="submit"
-                  onClick={() => this.props.increase(prodObj[productId], id)}
-                >
-                  Increase
-                </button>
-                <button
-                  type="submit"
-                  onClick={() => this.decrease(prodObj[productId], id)}
-                >
-                  Decrease
-                </button>
-              </div>
-            )
-          })}
+                      <div>Quantity: {quantity}</div>
+                      <button
+                        type="submit"
+                        onClick={() =>
+                          this.props.increase(prodObj[productId], id)
+                        }
+                      >
+                        Increase
+                      </button>
+                      <button
+                        type="submit"
+                        onClick={() => this.decrease(prodObj[productId], id)}
+                      >
+                        Decrease
+                      </button>
+                      <Divider />
+                    </div>
+                  )
+                })}
+              </Paper>
+            </Grid>
+          </Grid>
         </div>
       )
     }
