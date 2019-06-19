@@ -4,7 +4,7 @@ import React from 'react'
 import {connect} from 'react-redux'
 import {addToOrder, decrement, getOrder} from '../store/cart'
 import {fetchProduct} from '../store/selectedProduct'
-
+import Button from '@material-ui/core/Button'
 import {makeStyles, styled} from '@material-ui/core/styles'
 import Paper from '@material-ui/core/Paper'
 import Grid from '@material-ui/core/Grid'
@@ -84,22 +84,21 @@ class ProductInCart extends React.Component {
                       <Typography gutterBottom variant="h5" component="h2">
                         ${prodObj[productId].price / 100}
                       </Typography>
-
-                      <div>Quantity: {quantity}</div>
-                      <button
-                        type="submit"
+                      <div>
+                        Quantity: <b>{quantity}</b>
+                      </div>
+                      <Button
                         onClick={() =>
                           this.props.increase(prodObj[productId], id)
                         }
                       >
                         Increase
-                      </button>
-                      <button
-                        type="submit"
+                      </Button>
+                      <Button
                         onClick={() => this.decrease(prodObj[productId], id)}
                       >
                         Decrease
-                      </button>
+                      </Button>
                       <Divider />
                     </div>
                   )
