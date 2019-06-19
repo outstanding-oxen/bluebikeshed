@@ -66,7 +66,10 @@ const ItemOnProductPage = props => {
           </Paper>
         </Grid>
         <Grid item xs={6}>
-          <Paper className={classes.paper}>{<h1>RIGHT</h1>}</Paper>
+          <Paper className={classes.paper}>
+            {<h1>Description</h1>}
+            {props.product.description}
+          </Paper>
         </Grid>
       </Grid>
     </div>
