@@ -21,7 +21,7 @@ class ProductPage extends React.Component {
   //   this.props.addToCart(product, UserId)
   // }
   onSubmit(event) {
-    console.log('product page', this.props)
+    console.log('DOES THIS WORK', this.props)
     try {
       this.props.addToCart(this.props.product, this.props.user.id)
       // this.addToCard(this.props.product)
@@ -44,7 +44,7 @@ class ProductPage extends React.Component {
 
 const mapState = state => ({
   product: state.selectedProduct || {},
-  user: state.id || {id: 1} //CHANGE THIS WHEN YOU CAN GET USER
+  user: state.id //|| {id: 1} //CHANGE THIS WHEN YOU CAN GET USER
 })
 
 const mapDispatch = dispatch => ({
