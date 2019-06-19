@@ -68,13 +68,17 @@ class ProductInCart extends React.Component {
       return <div>No products in cart</div>
     } else if (Object.keys(prodObj).length) {
       const id = this.props.userId
+      let imagetemp = []
+      for (let i = 0; i < this.state.productArray.length; i++) {
+        imagetemp.push(this.state.productArray[i].imageUrl)
+      }
 
       return (
         <div style={{flexGrow: 1, paddingTop: '1vh'}}>
           <Grid container spacing={3}>
             <Grid item xs={12}>
               <Paper>
-                {Object.keys(cartObj).map(productId => {
+                {Object.keys(cartObj).map((productId, index) => {
                   let quantity = cartObj[productId]
                   return (
                     <div key={productId} style={{padding: '10px'}}>
@@ -84,6 +88,7 @@ class ProductInCart extends React.Component {
                       <Typography gutterBottom variant="h5" component="h2">
                         ${prodObj[productId].price / 100}
                       </Typography>
+                      <img src={imagetemp[index]} width="30%" height="30%" />
                       <div>
                         Quantity: <b>{quantity}</b>
                       </div>
@@ -100,7 +105,6 @@ class ProductInCart extends React.Component {
                       >
                         {quantity === 1 ? 'Delete' : 'Decrease'}
                       </Button>
-
                       <Divider />
                     </div>
                   )
