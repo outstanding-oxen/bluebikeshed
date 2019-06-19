@@ -117,8 +117,6 @@ const Navbar = props => {
   let {handleClick, isLoggedIn, products} = props
   const classes = useStyles()
   const [anchorEl, setAnchorEl] = React.useState(null)
-  console.log('navbar')
-  console.log('isloggedin', isLoggedIn)
 
   function handleMenuClick(event) {
     setAnchorEl(event.currentTarget)
