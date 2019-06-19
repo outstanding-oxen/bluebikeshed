@@ -2,11 +2,13 @@ import React from 'react'
 import {makeStyles, styled} from '@material-ui/core/styles'
 import Paper from '@material-ui/core/Paper'
 import Grid from '@material-ui/core/Grid'
-
+import 'react-toastify/dist/ReactToastify.css'
 import CardContent from '@material-ui/core/CardContent'
 import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
 import Box from '@material-ui/core/Box'
+
+import {toast} from 'react-toastify'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -35,8 +37,7 @@ const MyButton = styled(Button)({
 })
 
 const ItemOnProductPage = props => {
-  console.log('INSIDE ITEM ON PRODUCT PAGE')
-  console.log(props)
+  const notify = () => toast(`${props.product.name} added to your cart`)
 
   const classes = useStyles()
   return (
@@ -60,7 +61,12 @@ const ItemOnProductPage = props => {
                 </Box>
               </Typography>
             </CardContent>
-            <MyButton color="default" fullWidth={true} onClick={props.onSubmit}>
+            <MyButton
+              color="default"
+              fullWidth={true}
+              onClick={props.onSubmit}
+              onClick={notify}
+            >
               Add to Cart
             </MyButton>
           </Paper>

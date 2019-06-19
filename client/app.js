@@ -7,6 +7,8 @@ import Home from './components/Home'
 import Footer from './components/Footer'
 import ProductPage from './components/ProductPage'
 import AllProducts from './components/AllProducts'
+import {ToastContainer, toast} from 'react-toastify'
+
 const App = () => {
   return (
     <div>
@@ -17,6 +19,7 @@ const App = () => {
       {/* <Loading /> */}
       {/* <ProductPage /> */}
       {/* <Footer /> */}
+      <ToastContainer />
     </div>
   )
 }
