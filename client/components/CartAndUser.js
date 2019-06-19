@@ -31,7 +31,10 @@ const useStyles = makeStyles(theme => ({
 const Cart = props => {
   const id = props.userId
   const cart = props.cart
-  const qty = Object.values(cart.products).reduce((total, qty) => total + qty)
+  const qty = Object.values(cart.products).reduce(
+    (total, qty) => total + qty,
+    0
+  )
   console.log(qty)
   console.log(cart)
   const classes = useStyles()
