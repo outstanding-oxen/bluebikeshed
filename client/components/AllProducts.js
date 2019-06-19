@@ -1,7 +1,7 @@
 import React from 'react'
 // import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
-
+import {toast} from 'react-toastify'
 // /**
 //  * COMPONENT
 //  *
@@ -25,7 +25,7 @@ class AllProducts extends React.Component {
     super()
     this.onSubmit = this.onSubmit.bind(this)
   }
-
+  notify = name => toast(`${name} added to your cart`)
   componentDidMount() {
     this.props.getAllProducts()
   }
@@ -33,6 +33,7 @@ class AllProducts extends React.Component {
     console.log('FROM ALL PRODUCTS', product)
     try {
       this.props.addToCart(product, this.props.user.id)
+      this.notify(product.name)
       // this.addToCard(this.props.product)
       // this.props.addToCard(this.props.product, null)
     } catch (err) {

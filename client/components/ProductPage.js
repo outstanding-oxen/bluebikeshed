@@ -7,12 +7,14 @@ import ItemOnProductPage from './ItemOnProductPage'
 import {connect} from 'react-redux'
 import {fetchProduct} from '../store/selectedProduct'
 import {addToOrder} from '../store/cart'
+
+import {toast} from 'react-toastify'
 class ProductPage extends React.Component {
   constructor(props) {
     super()
     this.onSubmit = this.onSubmit.bind(this)
   }
-
+  notify = name => toast(`${name} added to your cart`)
   componentDidMount() {
     this.props.getProduct(this.props.match.params.id)
   }
@@ -24,6 +26,7 @@ class ProductPage extends React.Component {
     console.log('product page', this.props)
     try {
       this.props.addToCart(this.props.product, this.props.user.id)
+      this.notify(this.props.product.name)
       // this.addToCard(this.props.product)
       // this.props.addToCard(this.props.product, null)
     } catch (err) {

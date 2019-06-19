@@ -13,7 +13,7 @@ import Typography from '@material-ui/core/Typography'
 import Box from '@material-ui/core/Box'
 import Card from '@material-ui/core/Card'
 import {Link} from 'react-router-dom'
-import {toast} from 'react-toastify'
+
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
@@ -58,7 +58,7 @@ const MyButton = styled(Button)({
 
 const ProductInAllProducts = props => {
   console.log('rendering')
-  const notify = name => toast(`${name} added to your cart`)
+
   const classes = useStyles()
   return (
     <div className={classes.root}>
@@ -97,7 +97,6 @@ const ProductInAllProducts = props => {
                 onClick={() => {
                   props.onSubmit(product)
                 }}
-                onClick={() => notify(product.name)}
               >
                 Add to cart
               </MyButton>
