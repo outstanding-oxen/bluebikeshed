@@ -90,7 +90,13 @@ const ProductInAllProducts = props => {
               </CardContent>
             </CardActionArea>
             <CardActions>
-              <MyButton size="small" color="primary">
+              <MyButton
+                size="small"
+                color="primary"
+                onClick={() => {
+                  props.onSubmit(product)
+                }}
+              >
                 Add to cart
               </MyButton>
             </CardActions>
