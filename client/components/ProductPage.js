@@ -17,15 +17,10 @@ class ProductPage extends React.Component {
     this.props.getProduct(this.props.match.params.id)
   }
 
-  // addToCard(product, UserId = null) {
-  //   this.props.addToCart(product, UserId)
-  // }
+
   onSubmit(event) {
-    console.log('DOES THIS WORK', this.props)
     try {
       this.props.addToCart(this.props.product, this.props.user.id)
-      // this.addToCard(this.props.product)
-      // this.props.addToCard(this.props.product, null)
     } catch (err) {
       console.error(err)
     }
