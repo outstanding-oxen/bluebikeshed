@@ -1,5 +1,6 @@
 import React from 'react'
-
+import {ToastContainer, toast} from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 import {Navbar} from './components'
 import Routes from './routes'
 import Loading from './components/Loading'
@@ -17,6 +18,7 @@ const App = () => {
       {/* <Loading /> */}
       {/* <ProductPage /> */}
       {/* <Footer /> */}
+      <ToastContainer />
     </div>
   )
 }

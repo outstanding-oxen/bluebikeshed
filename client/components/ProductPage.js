@@ -7,6 +7,8 @@ import ItemOnProductPage from './ItemOnProductPage'
 import {connect} from 'react-redux'
 import {fetchProduct} from '../store/selectedProduct'
 import {addToOrder} from '../store/cart'
+import {ToastContainer, toast} from 'react-toastify'
+
 class ProductPage extends React.Component {
   constructor(props) {
     super()
@@ -17,10 +19,12 @@ class ProductPage extends React.Component {
     this.props.getProduct(this.props.match.params.id)
   }
 
-
+  notify = name => toast(`${name} added to your cart`)
   onSubmit(event) {
     try {
-      this.props.addToCart(this.props.product, this.props.user.id)
+      this.props.addToCart(this.props.product, this.props.user)
+
+      this.notify(this.props.product.name)
     } catch (err) {
       console.error(err)
     }
