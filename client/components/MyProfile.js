@@ -23,6 +23,7 @@ const MyProfile = props => {
   console.log(props)
   console.log('props', props.user.firstName)
   const classes = useStyles()
+  console.log(props.user)
 
   return (
     <Grid container spacing={3}>
@@ -34,10 +35,10 @@ const MyProfile = props => {
             <h1>Welcome {props.user.firstName}!</h1>
           </div>
           <h1>My Address</h1>
-          <h2>{props.user.Address[0].address}</h2>
-          <h2>{props.user.Address[0].city}</h2>
-          <h2>{props.user.Address[0].state}</h2>
-          <h2>{props.user.Address[0].zipcode}</h2>
+          <h2>{props.user.Address.address}</h2>
+          <h2>{props.user.Address.city}</h2>
+          <h2>{props.user.Address.state}</h2>
+          <h2>{props.user.Address.zipcode}</h2>
         </Paper>
       </Grid>
     </Grid>
