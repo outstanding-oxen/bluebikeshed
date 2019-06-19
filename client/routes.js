@@ -6,12 +6,12 @@ import PropTypes from 'prop-types'
 
 import {me} from './store'
 
-import SignIn from './components/SignIn'
-import SignUp from './components/SignUp'
+import SignInPage from './components/SignInPage'
+import SignUpPage from './components/SignUpPage'
 import AllProducts from './components/AllProducts'
 import ProductPage from './components/ProductPage'
 import Cart from './components/CartPage'
-import CheckoutPage from './components/CheckoutPage'
+import MyProfile from './components/MyProfile'
 /**
  * COMPONENT
  */
@@ -27,16 +27,16 @@ class Routes extends Component {
       <Switch>
         {/* Routes placed here are available to all visitors */}
         {/* <Route path="/login" component={Login} /> */}
-        <Route path="/login" component={SignIn} />
-        <Route path="/signup" component={SignUp} />
+        <Route path="/login" component={SignInPage} />
+        <Route path="/signup" component={SignUpPage} />
         <Route exact path="/products" component={AllProducts} />
         <Route exact path="/products/:id(\d+)" component={ProductPage} />
         <Route exact path="/cart" component={Cart} />
-        <Route exact path="/orders/checkout" component={CheckoutPage} />
         {/* <Route exact path="/products/:id(\d+)" component={SingleCampus} /> */}
 
         {isLoggedIn && (
           <Switch>
+            <Route exact path="/myprofile" component={MyProfile} />
             {/* Routes placed here are only available after logging in */}
             {/* <Route path="/home" component={UserHome} /> */}
           </Switch>
