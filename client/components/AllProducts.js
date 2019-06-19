@@ -30,11 +30,8 @@ class AllProducts extends React.Component {
     this.props.getAllProducts()
   }
   onSubmit(product) {
-    console.log('FROM ALL PRODUCTS', product)
     try {
       this.props.addToCart(product, this.props.user.id)
-      // this.addToCard(this.props.product)
-      // this.props.addToCard(this.props.product, null)
     } catch (err) {
       console.error(err)
     }
@@ -53,7 +50,7 @@ class AllProducts extends React.Component {
 //  */
 const mapState = state => ({
   products: state.product || [],
-  user: state.id || {id: 1}
+  user: state.user
 })
 
 const mapDispatch = dispatch => ({
