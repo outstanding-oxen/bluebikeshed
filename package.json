@@ -55,7 +55,7 @@
     "material-ui": "^0.20.2",
     "material-ui-icons": "^1.0.0-beta.36",
     "morgan": "^1.9.1",
-    "node-sass": "^4.12.0",
+    "node-sass": "^7.0.0",
     "passport": "^0.4.0",
     "passport-google-oauth": "^2.0.0",
     "pg": "^7.9.0",
